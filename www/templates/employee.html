@@ -1,0 +1,23 @@
+<ion-view view-title="Employee">
+  <ion-nav-buttons side="secondary">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-plus-outline"
+        ng-click="addNewEmployee()"></button>
+    </div>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+     <ion-item ng-repeat="employee in employees" href="#/app/employee/{{employee.id}}" class="item-thumbnail-left">
+        <img ng-src="{{employee.photo}}">
+        <h2>{{employee.name}}</h2>
+        <p>
+        		<i class="ion-android-calendar" ></i> Birthdate: {{employee.dob | date:"dd-MM-yyyy"}}<br/>
+        		<i class="ion-ios-calendar-outline" ></i> Joining Date: {{employee.joining_date | date:"dd-MM-yyyy"}}
+    	</p>
+        <p><i class="ion-at" ></i> <a href="mailto:{{customer.email}}" >{{employee.email}}</a></p>
+        <p><i class="ion-android-call" ></i> <a href="tel:{{customer.phone}}" >{{employee.phone}} </a></p>
+         <ion-option-button class="button-assertive" ng-click="editEmployee(employee)">Edit </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

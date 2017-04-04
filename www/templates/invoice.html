@@ -1,0 +1,24 @@
+<ion-view view-title="Invoices">
+  <ion-nav-buttons side="secondary">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-plus-outline"
+        ng-click="addNewInvoice()"></button>
+    </div>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+     <ion-item ng-repeat="invoice in invoices" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
+        <div class="item-image">
+        	<div class="num_box">
+        		{{invoice.invoice_no}}
+        	</div>
+        </div>
+        <h2>{{invoice.customer}}</h2>
+        <p><i class="ion-cash" ></i> Rs. {{invoice.total_amount}}</p>
+        <p><i class="ion-ios-calendar-outline" ></i> {{invoice.invoice_date | date:'dd-MM-yyyy'}}</p>
+        <p>{{invoice.description}}</p>
+         <ion-option-button class="button-assertive" ng-click="editInvoice(invoice)">Edit </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
