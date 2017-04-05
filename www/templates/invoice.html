@@ -6,8 +6,11 @@
     </div>
   </ion-nav-buttons>
   <ion-content>
+    <input type="text" name="S_Date" ng-model="dateFrom" /> <br/>
+
+    <input type="text" name="S_Date" ng-model="dateTo" />
     <ion-list>
-     <ion-item ng-repeat="invoice in invoices" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
+     <ion-item ng-repeat="invoice in invoices | myfilter: dateFrom: dateTo" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
         <div class="item-image">
         	<div class="num_box">
         		{{invoice.invoice_no}}

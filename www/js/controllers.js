@@ -1,6 +1,6 @@
 angular.module('myapp.controllers', ['myapp.config'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -52,8 +52,8 @@ angular.module('myapp.controllers', ['myapp.config'])
   ];
 })
 
-.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate',
-                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate) {
+.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearService',
+                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearService) {
   $scope.message="";
 
   $scope.invoice={};
@@ -61,6 +61,12 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.invoiceHeader="Add Invoice";
 
   $scope.invoiceButtonText="Add";
+
+  var financialYear=financialYearService.getCurrentFinancialYear();
+
+  $scope.dateFrom=financialYear.start_date;
+
+  $scope.dateTo=financialYear.end_date;
 
   $ionicModal.fromTemplateUrl('templates/manageInvoice.html', {
     scope: $scope
@@ -76,6 +82,8 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.invoiceModal.hide();
 
     $scope.invoice={};
+
+    $scope.invoiceHeader="Add Invoice";
   };
 
   $scope.addNewInvoice=function(){
@@ -139,6 +147,8 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.customerModal.hide();
 
     $scope.customer={};
+
+    $scope.customerHeader="Add Customer";
   };
 
   $scope.addNewCustomer=function(){
@@ -204,6 +214,8 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.employeeModal.hide();
 
     $scope.employee={};
+
+    $scope.employeeHeader="Add Employee";
   };
 
   $scope.addNewEmployee=function(){
@@ -271,4 +283,27 @@ angular.module('myapp.controllers', ['myapp.config'])
       input = input || '';
       return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     };
+  })
+.filter('myfilter', function($filter) {
+    return function(items, startDate, endDate) {
+            var filteredArray = [];
+
+            if (!startDate && !endDate) {
+              return items;
+            }
+
+            if(startDate=="" || endDate=="")
+            {
+              return items;
+            }
+
+              angular.forEach(items, function(obj){
+                  var invoiceDate = obj.invoice_date;        
+                  if(moment(invoiceDate).isAfter(startDate) && moment(invoiceDate).isBefore(endDate)) {
+                      filteredArray.push(obj);
+                  }
+              });
+
+              return filteredArray;
+      };
   });
