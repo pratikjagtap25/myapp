@@ -6,10 +6,10 @@
         </div>
         <ion-item class="item-thumbnail-left item-text-wrap">
         	<img ng-src="{{employeeDetail.photo}}">
-	        <h2>{{employeeDetail.name}}</h2>
+	        <h2>{{employeeDetail.first_name + employeeDetail.last_name}}</h2>
 	        <p>
         		<i class="icon ion-location"></i>
-				{{employeeDetail.address}}
+				{{employeeDetail.current_address}}
         	</p>
     	</ion-item>
     </ion-list>
@@ -32,22 +32,22 @@
 		<ion-item class="item-icon-left">
 			<i class="icon ion-calendar"></i>
 			Birth Date
-			<span class="item-note">{{employeeDetail.dob | date:'dd-MM-yyyy'}}</span>
+			<span class="item-note">{{employeeDetail.date_of_birth | date:'dd-MM-yyyy'}}</span>
 		</ion-item>
 
 		<ion-item class="item-icon-left">
 			<i class="icon ion-android-calendar"></i>
 			Joining Date
-			<span class="item-note">{{employeeDetail.joining_date | date:'dd-MM-yyyy'}}</span>
+			<span class="item-note">{{employeeDetail.date_of_joining | date:'dd-MM-yyyy'}}</span>
 		</ion-item>
 
 		<ion-item class="item-icon-left">
 			<i class="icon ion-at"></i>
-			<a href="mailto:{{employeeDetail.email}}" >{{employeeDetail.email}}</a>
+			<a href="mailto:{{employeeDetail.email_id}}" >{{employeeDetail.email}}</a>
 		</ion-item>
 		<ion-item class="item-icon-left">
 			<i class="icon ion-android-call"></i>
-			<a href="tel:{{employeeDetail.phone}}" >{{employeeDetail.phone}} </a>
+			<a href="tel:{{employeeDetail.mobile_phone}}" >{{employeeDetail.phone}} </a>
 		</ion-item>
   	</ion-list>
   </ion-content>

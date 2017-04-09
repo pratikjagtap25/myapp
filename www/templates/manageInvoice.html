@@ -11,15 +11,15 @@
         <input type="hidden" ng-model="invoice.id" >
         <label class="item item-input">
           <span class="input-label">Invoice No.</span>
-          <input type="text" ng-model="invoice.invoice_no">
+          <input type="text" ng-model="invoice.bill_no">
         </label>
          <label class="item item-input">
           <span class="input-label">Date</span>
-          <input type="text" ng-model="invoice.invoice_date" formatted-date format="dd-MM-yyyy">
+          <input type="text" ng-model="invoice.bill_date" formatted-date format="dd-MM-yyyy">
         </label>
          <label class="item item-input">
           <span class="input-label">Customer</span>
-          <input type="text" ng-model="invoice.customer">
+          <input type="text" ng-model="invoice.customer_name">
         </label>
        <label class="item item-input item-stacked-label">
           <span class="input-label">Description</span>
@@ -31,15 +31,15 @@
         </label>
         <label class="item item-input">
           <span class="input-label">Tax (%)</span>
-          <input type="number"   ng-model="invoice.tax">
+          <input type="number"   ng-model="invoice.service_tax">
         </label>
         <label class="item item-input">
           <span class="input-label">Tax Amount</span>
-          <input type="text"  ng-model="invoice.tax_amount">
+          <input type="text"  ng-model="invoice.service_tax_amount">
         </label>
         <label class="item item-input">
           <span class="input-label">Total Amount</span>
-          <input type="text"  ng-model="invoice.total_amount">
+          <input type="text"  ng-model="invoice.net_amount">
         </label>
         <label class="item">
           <button class="button button-block button-assertive" type="submit">{{invoiceButtonText}}</button>

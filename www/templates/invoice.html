@@ -5,20 +5,30 @@
         ng-click="addNewInvoice()"></button>
     </div>
   </ion-nav-buttons>
+  <ion-header-bar class="bar-light bar-subheader item-input-inset">
+      <label class="item-input-wrapper">
+            <i class="icon ion-ios-search-strong placeholder-icon"></i>
+            <input type="search" placeholder="Search Invoice" ng-model="searchFilter" >
+        </label>
+        <button ng-if="searchFilter.length"
+        class="button button-icon ion-android-close input-button"
+        ng-click="clearSearch()">
+      </button>
+    </ion-header-bar>
   <ion-content>
-    <input type="text" name="S_Date" ng-model="dateFrom" /> <br/>
+    <input type="hidden" name="S_Date" ng-model="dateFrom" />
 
-    <input type="text" name="S_Date" ng-model="dateTo" />
+    <input type="hidden" name="S_Date" ng-model="dateTo" />
     <ion-list>
-     <ion-item ng-repeat="invoice in invoices | myfilter: dateFrom: dateTo" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
+     <ion-item collection-repeat="invoice in invoices | myfilter: dateFrom: dateTo | filter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
         <div class="item-image">
         	<div class="num_box">
-        		{{invoice.invoice_no}}
+        		{{invoice.bill_no}}
         	</div>
         </div>
-        <h2>{{invoice.customer}}</h2>
-        <p><i class="ion-cash" ></i> Rs. {{invoice.total_amount}}</p>
-        <p><i class="ion-ios-calendar-outline" ></i> {{invoice.invoice_date | date:'dd-MM-yyyy'}}</p>
+        <h2>{{invoice.customer_name}}</h2>
+        <p><i class="ion-cash" ></i> Rs. {{invoice.net_amount}}</p>
+        <p><i class="ion-ios-calendar-outline" ></i> {{invoice.bill_date | date:'dd-MM-yyyy'}}</p>
         <p>{{invoice.description}}</p>
          <ion-option-button class="button-assertive" ng-click="editInvoice(invoice)">Edit </ion-option-button>
       </ion-item>

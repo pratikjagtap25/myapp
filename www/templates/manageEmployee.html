@@ -10,28 +10,32 @@
       <div class="list">
         <input type="hidden" ng-model="employee.id" >
         <label class="item item-input">
-          <span class="input-label">Name</span>
-          <input type="text" ng-model="employee.name">
+          <span class="input-label">First Name</span>
+          <input type="text" ng-model="employee.first_name">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Middle Name</span>
+          <input type="text" ng-model="employee.middle_name">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Last Name</span>
+          <input type="text" ng-model="employee.last_name">
         </label>
         <label class="item item-input">
           <span class="input-label">Email</span>
-          <input type="email"   ng-model="employee.email">
+          <input type="email"   ng-model="employee.email_id">
         </label>
         <label class="item item-input">
           <span class="input-label">Phone</span>
-          <input type="text"   ng-model="employee.phone">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Age</span>
-          <input type="number" ng-model="employee.age">
+          <input type="text"   ng-model="employee.mobile_phone">
         </label>
         <label class="item item-input">
           <span class="input-label">Birthdate</span>
-          <input type="text" ng-model="employee.dob" formatted-date format="dd-MM-yyyy">
+          <input type="text" ng-model="employee.date_of_birth" formatted-date format="dd-MM-yyyy">
         </label>
         <label class="item item-input">
           <span class="input-label">Joining Date</span>
-          <input type="text" ng-model="employee.joining_date" formatted-date format="dd-MM-yyyy">
+          <input type="text" ng-model="employee.date_of_joining" formatted-date format="dd-MM-yyyy">
         </label>
         <label class="item item-input item-select">
 		    <div class="input-label">
@@ -44,7 +48,7 @@
 		 </label>
        	<label class="item item-input item-stacked-label">
           <span class="input-label">Address</span>
-          <textarea  ng-model="employee.address" rows="8" cols="10"></textarea>
+          <textarea  ng-model="employee.current_address" rows="8" cols="10"></textarea>
         </label>
         <label class="item">
           <button class="button button-block button-assertive" type="submit">{{employeeButtonText}}</button>

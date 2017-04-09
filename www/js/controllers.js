@@ -52,8 +52,8 @@ angular.module('myapp.controllers', ['myapp.config'])
   ];
 })
 
-.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearService',
-                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearService) {
+.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearService','loadingFactory',
+                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearService,loadingFactory) {
   $scope.message="";
 
   $scope.invoice={};
@@ -64,9 +64,13 @@ angular.module('myapp.controllers', ['myapp.config'])
 
   var financialYear=financialYearService.getCurrentFinancialYear();
 
-  $scope.dateFrom=financialYear.start_date;
+  //$scope.dateFrom=financialYear.start_date;
 
-  $scope.dateTo=financialYear.end_date;
+  //$scope.dateTo=financialYear.end_date;
+
+  $scope.dateFrom="";
+
+  $scope.dateTo="";  
 
   $ionicModal.fromTemplateUrl('templates/manageInvoice.html', {
     scope: $scope
@@ -104,29 +108,44 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.showInvoiceModel();
   };
 
-  invoiceFactory.query(
-      function(response){
-        $scope.invoices=response;
-      },
-      function(response){
-        $scope.message = "Error: "+response.status + " " + response.statusText;
-      }
-  );
+  loadingFactory.showLoader("Loading");
+
+  invoiceFactory.getInvoices()
+      .then(function (response) {
+          $scope.invoices = response.data.data;
+
+          loadingFactory.hideLoader();
+      }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+
+          loadingFactory.hideLoader();
+      });
+
+  $scope.clearSearch=function(){
+    $scope.searchFilter="";
+  };
 }])
-.controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams',function($scope, invoiceFactory,$stateParams) {
+.controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams','loadingFactory',
+                                function($scope, invoiceFactory,$stateParams,loadingFactory) {
   $scope.message="";
+
+  loadingFactory.showLoader("Loading");
+
+  invoiceFactory.getInvoice(parseInt($stateParams.id,10))
+    .then(function (response) {
+        $scope.invoiceDetail = response.data.data;
+
+        loadingFactory.hideLoader();
+
+    }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+
+        loadingFactory.hideLoader();
+    });
   
-  invoiceFactory.get({id:parseInt($stateParams.id,10)}).$promise.then(
-        function(response){
-            $scope.invoiceDetail = response;
-        },
-        function(response) {
-            $scope.message = "Error: "+response.status + " " + response.statusText;
-        }
-    );
 }])
-.controller('CustomerCtrl',['$scope','customerFactory','$ionicModal','$timeout','$ionicListDelegate',
-          function($scope,customerFactory,$ionicModal,$timeout,$ionicListDelegate){
+.controller('CustomerCtrl',['$scope','customerFactory','$ionicModal','$timeout','$ionicListDelegate','loadingFactory',
+          function($scope,customerFactory,$ionicModal,$timeout,$ionicListDelegate,loadingFactory){
   $scope.customer={};
   
   $scope.customerHeader="Add Customer";
@@ -169,31 +188,40 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.showCustomerModel();
   };
 
-        
-  customerFactory.query(
-      function(response){
-        $scope.customers=response;
-      },
-      function(response){
-        $scope.message = "Error: "+response.status + " " + response.statusText;
-      }
-  );
+  loadingFactory.showLoader("Loading");
 
+  customerFactory.getCustomers()
+      .then(function (response) {
+          $scope.customers = response.data.data;
+
+          loadingFactory.hideLoader();
+      }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+
+          loadingFactory.hideLoader();
+      });        
+  
 }])
-.controller('CustomerDetailCtrl',['$scope', 'customerFactory','$stateParams',function($scope, customerFactory,$stateParams) {
+.controller('CustomerDetailCtrl',['$scope', 'customerFactory','$stateParams','loadingFactory',
+                        function($scope, customerFactory,$stateParams,loadingFactory) {
   $scope.message="";
   
-  customerFactory.get({id:parseInt($stateParams.id,10)}).$promise.then(
-        function(response){
-            $scope.customerDetail = response;
-        },
-        function(response) {
-            $scope.message = "Error: "+response.status + " " + response.statusText;
-        }
-    );
+  loadingFactory.showLoader("Loading");
+
+  customerFactory.getCustomer(parseInt($stateParams.id,10))
+    .then(function (response) {
+        $scope.customerDetail = response.data.data;
+
+        loadingFactory.hideLoader();
+    }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+
+        loadingFactory.hideLoader();
+    });
+
 }])
-.controller('EmployeeCtrl',['$scope','employeeFactory','$ionicModal','$timeout','$ionicListDelegate',
-          function($scope,employeeFactory,$ionicModal,$timeout,$ionicListDelegate){
+.controller('EmployeeCtrl',['$scope','employeeFactory','$ionicModal','$timeout','$ionicListDelegate','loadingFactory',
+                  function($scope,employeeFactory,$ionicModal,$timeout,$ionicListDelegate,loadingFactory){
   $scope.employee={};
   
   $scope.employeeHeader="Add Employee";
@@ -236,29 +264,59 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.showEmployeeModel();
   };
 
-        
-  employeeFactory.query(
-      function(response){
-        $scope.employees=response;
-      },
-      function(response){
-        $scope.message = "Error: "+response.status + " " + response.statusText;
-      }
-  );
+  loadingFactory.showLoader("Loading");
+
+  employeeFactory.getEmployees()
+      .then(function (response) {
+          $scope.employees = response.data.data;
+
+          loadingFactory.hideLoader();
+
+      }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+
+          loadingFactory.hideLoader();
+      });          
+  
+
 
 }])
-.controller('EmployeeDetailCtrl',['$scope', 'employeeFactory','$stateParams',function($scope, employeeFactory,$stateParams) {
+.controller('EmployeeDetailCtrl',['$scope', 'employeeFactory','$stateParams','loadingFactory',
+                          function($scope, employeeFactory,$stateParams,loadingFactory) {
   $scope.message="";
   
-  employeeFactory.get({id:parseInt($stateParams.id,10)}).$promise.then(
-        function(response){
-            $scope.employeeDetail = response;
-        },
-        function(response) {
-            $scope.message = "Error: "+response.status + " " + response.statusText;
-        }
-    );
+  loadingFactory.showLoader("Loading");
+
+  employeeFactory.getEmployee(parseInt($stateParams.id,10))
+    .then(function (response) {
+        $scope.employeeDetail = response.data.data;
+        loadingFactory.hideLoader();
+    }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+        loadingFactory.hideLoader();
+    });
+
 }])
+.controller('DashboardCtrl',['$scope', 'dashboardFactory','$stateParams','loadingFactory',
+                                function($scope, dashboardFactory,$stateParams,loadingFactory) {
+  $scope.message="";
+
+  loadingFactory.showLoader("Loading");
+
+  dashboardFactory.getDashboardData()
+    .then(function (response) {
+        $scope.dashboardData = response.data.data;
+
+        loadingFactory.hideLoader();
+
+    }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+
+        loadingFactory.hideLoader();
+    });
+  
+}])
+
 .directive('formattedDate', function(dateFilter) {
   return {
     require: 'ngModel',

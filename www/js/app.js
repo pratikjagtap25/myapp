@@ -36,7 +36,8 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
     url: '/dashboard',
     views: {
       'menuContent': {
-        templateUrl: 'templates/dashboard.html'
+        templateUrl: 'templates/dashboard.html',
+        controller: "DashboardCtrl"
       }
     }
   })
