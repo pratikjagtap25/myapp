@@ -1,6 +1,41 @@
 'use strict';
 
 angular.module('myapp.services', ['ngResource','myapp.config'])
+.factory('loginFactory', ['$http', 'API_URL','$localStorage', function ($http, API_URL,$localStorage) {
+
+    var loginFactory = {};
+
+    loginFactory.authenticateUser = function (loginData) {
+
+        return $http.post('http://httpbin.org/post',loginData)
+                .success( function(response){
+                    var userDetails={'username':loginData.username,'login_time':new Date()};
+
+                    $localStorage.setObject('userDetails',{});
+
+                    $localStorage.setObject('userDetails',userDetails);
+                })
+                .error(function(error){
+
+                });
+    };
+
+    loginFactory.isAuthenticated=function(){
+        return ($localStorage.getObject('userDetails')!=null) ? true : false;
+    };
+
+    loginFactory.logoutUser=function(){
+         
+        return $localStorage.setObject('userDetails',{});
+    };
+
+    loginFactory.userInfo=function(){
+         
+        return $localStorage.getObject('userDetails');
+    };    
+
+    return loginFactory;
+}])
 .factory('invoiceFactory', ['$http', 'API_URL', function ($http, API_URL) {
 
     var invoiceFactory = {};
@@ -92,9 +127,11 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return dashboardFactory;
 
 }])
-.service('financialYearService', function () {
+.service('financialYearFactory', ['$http', 'API_URL', function ($http, API_URL) {
 
-    this.getCurrentFinancialYear=function(){
+    var financialYearFactory={};
+
+    financialYearFactory.getCurrentFinancialYear=function(){
         var currentMonth = moment().format('M');
         var currentYear=moment().format('Y');
 
@@ -108,9 +145,19 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
                 'end_date':moment(nextYear+'-03-31').format('YYYY-MM-DD')
         };
         return finYear;
-    }
+    };
 
-})
+
+    financialYearFactory.getFinancialYears= function () {
+        return $http.get(API_URL+'FinancialYearController/search');
+    };
+
+    financialYearFactory.getFinancialYear = function (id) {
+        return $http.get(API_URL + 'FinancialYearController/Get&id=' + id);
+    };
+    
+    return financialYearFactory;
+}])
 .factory('loadingFactory',['$ionicLoading',  function ($ionicLoading) {
     var loadingFactory={};
 
@@ -127,4 +174,20 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     return loadingFactory;
+}])
+.factory('$localStorage',['$window',function($window){
+    return {
+            set:function(key,value){
+                $window.localStorage[key]=value;
+            },
+            get:function(key,defaultValue){
+                return $window.localStorage[key] || defaultValue;
+            },
+            setObject:function(key,value){
+                $window.localStorage[key]=JSON.stringify(value);
+            },
+            getObject:function(key,defaultValue){
+                return JSON.parse($window.localStorage[key] || defaultValue);
+            }
+        }
 }]);

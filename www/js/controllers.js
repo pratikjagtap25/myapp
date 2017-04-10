@@ -1,6 +1,7 @@
 angular.module('myapp.controllers', ['myapp.config'])
 
-.controller('AppCtrl', function($scope,$rootScope, $ionicModal, $timeout) {
+.controller('AppCtrl', ['$scope', '$rootScope','loginFactory','$timeout','$state','loadingFactory',
+                function($scope,$rootScope,loginFactory,$timeout,$state,loadingFactory) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -9,37 +10,23 @@ angular.module('myapp.controllers', ['myapp.config'])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-  // Form data for the login modal
-  $scope.loginData = {};
+  $scope.isLoggedIn=loginFactory.isAuthenticated();
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+  $scope.userInfo=loginFactory.userInfo();
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+  $scope.logoutUser=function(){
+    loadingFactory.showLoader("Logging out");
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+    loginFactory.logoutUser();
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
     $timeout(function() {
-      $scope.closeLogin();
+          loadingFactory.hideLoader();
     }, 1000);
+
+    $state.go('app.login');
   };
-})
+
+}])
 
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
@@ -51,9 +38,39 @@ angular.module('myapp.controllers', ['myapp.config'])
     { title: 'Cowbell', id: 6 }
   ];
 })
+.controller('LoginCtrl', ['$scope', '$ionicSideMenuDelegate','loginFactory','loadingFactory','$localStorage','$state','$ionicViewService',
+                  function($scope,$ionicSideMenuDelegate,loginFactory,loadingFactory,$localStorage,$state,$ionicViewService) {
 
-.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearService','loadingFactory',
-                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearService,loadingFactory) {
+  $ionicSideMenuDelegate.canDragContent(false);
+
+  $scope.loginData = {'username':'PratikJ','password':'1112233'};
+
+  $scope.doLogin = function(loginData) {
+
+    loadingFactory.showLoader("Loading");
+
+    loginFactory.authenticateUser($scope.loginData)
+    .then(function (response) {
+
+      $ionicViewService.nextViewOptions({
+        disableBack: true
+      });
+
+      $scope.loginData = {};
+
+      loadingFactory.hideLoader();
+
+      $state.go('app.dashboard');
+
+    }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+        loadingFactory.hideLoader();
+    });
+  };
+
+}])
+.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearFactory','loadingFactory',
+                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearFactory,loadingFactory) {
   $scope.message="";
 
   $scope.invoice={};
@@ -62,8 +79,20 @@ angular.module('myapp.controllers', ['myapp.config'])
 
   $scope.invoiceButtonText="Add";
 
-  var financialYear=financialYearService.getCurrentFinancialYear();
+  $scope.invoiceFilter={};
 
+  $scope.financialYearList={};
+
+  var financialYear=financialYearFactory.getCurrentFinancialYear();
+
+  financialYearFactory.getFinancialYears()
+    .then(function (response) {
+        $scope.financialYearList = response.data.data;
+
+        loadingFactory.hideLoader();
+      }, function (error) {
+        $scope.status = 'Unable to load customer data: ' + error.message;
+  });
   //$scope.dateFrom=financialYear.start_date;
 
   //$scope.dateTo=financialYear.end_date;
@@ -124,6 +153,23 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.clearSearch=function(){
     $scope.searchFilter="";
   };
+
+  /*$ionicModal.fromTemplateUrl('invoiceFilter.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.invoiceFilterModal = modal;
+  });
+
+  $scope.showInvoiceFilter=function(){
+    $scope.invoiceFilterModal.show();
+  };
+
+  $scope.closeInvoiceFilter=function(){
+    $scope.invoiceFilterModal.hide();
+
+    $scope.invoiceFilter={};
+  };*/
+
 }])
 .controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams','loadingFactory',
                                 function($scope, invoiceFactory,$stateParams,loadingFactory) {
@@ -297,16 +343,24 @@ angular.module('myapp.controllers', ['myapp.config'])
     });
 
 }])
-.controller('DashboardCtrl',['$scope', 'dashboardFactory','$stateParams','loadingFactory',
-                                function($scope, dashboardFactory,$stateParams,loadingFactory) {
+.controller('DashboardCtrl',['$scope', 'dashboardFactory','$stateParams','loadingFactory','financialYearFactory','$ionicModal',
+                                function($scope, dashboardFactory,$stateParams,loadingFactory,financialYearFactory,$ionicModal) {
   $scope.message="";
+
+  var currentFinancialYear=financialYearFactory.getCurrentFinancialYear();
+
+  $scope.financial_year_start_date = currentFinancialYear.start_date;
+
+  $scope.financial_year_end_date = currentFinancialYear.end_date;
+
+  $scope.selected_financial_year=1;
 
   loadingFactory.showLoader("Loading");
 
   dashboardFactory.getDashboardData()
     .then(function (response) {
         $scope.dashboardData = response.data.data;
-
+        $scope.dashboardData.tax_payments=10;
         loadingFactory.hideLoader();
 
     }, function (error) {
@@ -314,6 +368,28 @@ angular.module('myapp.controllers', ['myapp.config'])
 
         loadingFactory.hideLoader();
     });
+    
+    financialYearFactory.getFinancialYears()
+      .then(function (response) {
+          $scope.financialYearList = response.data.data;
+
+        }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+    });
+
+    $ionicModal.fromTemplateUrl('templates/selectFinancialYear.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.financialYearModal = modal;
+    });
+
+    $scope.changeFinancialYear=function(){
+      $scope.financialYearModal.show();
+    };
+
+    $scope.closeFinancialYearModal=function(){
+      $scope.financialYearModal.hide();
+    };
   
 }])
 
