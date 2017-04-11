@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
 
-.run(function($ionicPlatform,$rootScope,loginFactory,$state) {
+.run(function($ionicPlatform,$rootScope,loginFactory,financialYearFactory,$state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -27,6 +27,25 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
       $state.go('app.login');
     }
   });
+
+  if(loginFactory.isAuthenticated())
+  {
+      financialYearFactory.getCurrentFinancialYear()
+      .then(function (response) {
+           var currentFinancialYear = response.data.data;
+
+           $rootScope.financial_year_start_date = currentFinancialYear[0].year_start_date;
+
+            $rootScope.financial_year_end_date = currentFinancialYear[0].year_end_date;
+
+            $rootScope.current_financial_year=currentFinancialYear[0].id;
+
+            $rootScope.financial_year_title=currentFinancialYear[0].year_title;
+
+        }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+    });
+  }
 })
 
 .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {

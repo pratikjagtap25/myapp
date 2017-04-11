@@ -28,7 +28,7 @@
 	  <ion-item class="item-icon-left">
 	     <i class="icon ion-cash"></i>
 	    Gross Amount 
-	    <span class="item-note">{{invoiceDetail.gross_amount}}</span>
+	    <span class="item-note">{{invoiceDetail.gross_amount | currency: 'Rs. '}}</span>
 	  </ion-item>
 
 	  <ion-item class="item-icon-left">
@@ -40,13 +40,13 @@
 	  <ion-item class="item-icon-left">
 	   <i class="icon ion-cash"></i>
 	    Tax Amount 
-	    <span class="item-note">{{invoiceDetail.service_tax_amount}}</span>
+	    <span class="item-note">{{invoiceDetail.service_tax_amount | currency: 'Rs. '}}</span>
 	  </ion-item>
 
 	  <ion-item class="item-icon-left">
 	   <i class="icon ion-cash"></i>
 	    Total Amount 
-	    <span class="item-note">{{invoiceDetail.net_amount}}</span>
+	    <span class="item-note">{{invoiceDetail.net_amount | currency: 'Rs. '}}</span>
 	  </ion-item>
 	</ion-list>
   </ion-content>

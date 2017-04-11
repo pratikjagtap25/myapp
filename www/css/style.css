@@ -1,4 +1,8 @@
 /* Empty. Add your own CSS if you like */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+body{
+  font-family: 'Open Sans', sans-serif;
+}
 .dash_row .col-details
 {
 	padding: 5px;
@@ -722,4 +726,102 @@ p.box-title
 {
 	font-weight: bold;
 	font-size: 19px;
+}
+.finYearPopup .popup
+{
+  width:95% !important;
+}
+.year-list
+{
+  margin-bottom: 0px;
+  
+}
+.year-list .item:first-child{
+  border-top: 0px;
+}
+.item-note 
+{
+  color:#515151;
+}
+.item p
+{
+  color:#515151;
+}
+.eventForm .scroll-content {
+    background: #e9e9e9;
+}
+.eventForm .eventTab .col div.tabtext {
+    background: #fff;
+    padding: 5px 0 5px;
+    min-height: 160px;
+    text-align: center;
+    border: 1px solid #f8ada7;
+}
+
+.eventForm .eventTab .col div.tabtext i {
+    font-size: 60px;
+    color: #ef473a;
+}
+.eventForm .eventTab .col div.tabtext h3 {
+    margin: 10px 0 0 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    color: #ef473a;
+    font-size: 18px;
+}
+.eventForm .eventTab .col div.tabtext p {
+    font-size: 30px;
+    padding-top: 15px;
+    color: #ef473a
+}
+.eventForm .eventTab .col a,
+.eventForm .eventTab .col a:hover,
+.eventForm .eventTab .col a:focus,
+.eventForm .eventTab .col a:active{
+  text-decoration: none;
+}
+.eventForm .eventTab .col div.tabtext.activated,
+.eventForm .eventTab .col div.tabtext.active {
+    background: #ef473a;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+.eventForm .eventTab .col div.tabtext.activated h3,
+.eventForm .eventTab .col div.tabtext.activated i,
+.eventForm .eventTab .col div.tabtext.active h3,
+.eventForm .eventTab .col div.tabtext.active i ,
+.eventForm .eventTab .col div.tabtext.activated p,
+.eventForm .eventTab .col div.tabtext.active p{
+    color: #fff;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+.eventForm .btnSubmit {
+    margin: 0 !important;
+}
+.eventForm {
+    background: #e9e9e9
+}
+@media screen and (min-width: 300px) {
+    .eventForm .eventTab .col div.tabtext.dubble {
+        padding-top: 20px;
+    }
+    .eventForm .eventTab .col div.tabtext.dubble h3 {
+        margin-top: 10px;
+    }
+}
+
+.main-amount
+{
+  font-weight: bold;
+  font-size: 20px
+}
+.item-highlighted
+{
+  background-color: #ddd;
 }

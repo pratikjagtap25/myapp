@@ -69,27 +69,48 @@ angular.module('myapp.controllers', ['myapp.config'])
   };
 
 }])
-.controller('InvoiceCtrl',['$scope', 'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearFactory','loadingFactory',
-                  function($scope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearFactory,loadingFactory) {
+.controller('InvoiceCtrl',['$scope','$rootScope' ,'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearFactory','loadingFactory','$ionicPopup',
+                  function($scope,$rootScope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearFactory,loadingFactory,$ionicPopup) {
   $scope.message="";
 
   $scope.invoice={};
+
+  $scope.searchFilter="";
   
   $scope.invoiceHeader="Add Invoice";
 
   $scope.invoiceButtonText="Add";
 
-  $scope.invoiceFilter={};
-
   $scope.financialYearList={};
 
-  var financialYear=financialYearFactory.getCurrentFinancialYear();
+  $scope.currentFinancialYear={};
+
+  $scope.selected_financial_year="";
+
+  $scope.year_data={
+    value:""
+  };
+
+  $timeout(function() {
+          $scope.financial_year_start_date=$rootScope.financial_year_start_date;
+
+          $scope.financial_year_end_date=$rootScope.financial_year_end_date;
+
+          $scope.current_financial_year=$rootScope.current_financial_year;
+
+          $scope.selected_financial_year=$rootScope.current_financial_year;
+
+          $scope.financial_year_title=$rootScope.financial_year_title;
+
+          $scope.year_data.value=$scope.selected_financial_year;
+
+          $scope.getInvoiceData($scope.current_financial_year);
+    }, 1000);
 
   financialYearFactory.getFinancialYears()
     .then(function (response) {
         $scope.financialYearList = response.data.data;
 
-        loadingFactory.hideLoader();
       }, function (error) {
         $scope.status = 'Unable to load customer data: ' + error.message;
   });
@@ -139,7 +160,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
   loadingFactory.showLoader("Loading");
 
-  invoiceFactory.getInvoices()
+  $scope.getInvoiceData=function(current_financial_year){
+    invoiceFactory.getInvoices(current_financial_year)
       .then(function (response) {
           $scope.invoices = response.data.data;
 
@@ -149,12 +171,13 @@ angular.module('myapp.controllers', ['myapp.config'])
 
           loadingFactory.hideLoader();
       });
-
+  };
+  
   $scope.clearSearch=function(){
     $scope.searchFilter="";
   };
 
-  /*$ionicModal.fromTemplateUrl('invoiceFilter.html', {
+  $ionicModal.fromTemplateUrl('invoiceFilter.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.invoiceFilterModal = modal;
@@ -168,7 +191,57 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.invoiceFilterModal.hide();
 
     $scope.invoiceFilter={};
-  };*/
+  };
+
+
+  $ionicModal.fromTemplateUrl('templates/selectFinancialYear.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.financialYearModal = modal;
+    });
+
+    $scope.changeFinancialYear=function(){
+      //$scope.financialYearModal.show();
+      // An elaborate, custom popup
+
+      $scope.changed_financial_year=$scope.selected_financial_year;
+
+      var myPopup = $ionicPopup.show({
+        template: '<ion-radio ng-repeat="option in financialYearList" ng-value="option.id" ng-model="year_data.value"> {{ option.year_title }} </ion-radio>',
+        title: 'Select Financial Year',
+        scope: $scope,
+        cssClass:'finYearPopup',
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: '<b>Apply</b>',
+            type: 'button-assertive',
+            onTap: function(e) {
+             $scope.applyYearFilter();
+            }
+          }
+        ]
+      });
+    };
+
+    $scope.closeFinancialYearModal=function(){
+      $scope.financialYearModal.hide();
+    };
+
+  $scope.applyYearFilter=function(){
+
+    $scope.closeFinancialYearModal();
+
+    loadingFactory.showLoader("");
+
+    var radionSelectedYear=$scope.financialYearList.filter(function(item) {
+        return item.id === $scope.year_data.value;
+    })[0];
+
+    $scope.financial_year_title=radionSelectedYear.year_title;
+
+    $scope.getInvoiceData($scope.year_data.value);
+  };
 
 }])
 .controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams','loadingFactory',
@@ -343,24 +416,31 @@ angular.module('myapp.controllers', ['myapp.config'])
     });
 
 }])
-.controller('DashboardCtrl',['$scope', 'dashboardFactory','$stateParams','loadingFactory','financialYearFactory','$ionicModal',
-                                function($scope, dashboardFactory,$stateParams,loadingFactory,financialYearFactory,$ionicModal) {
+.controller('DashboardCtrl',['$scope','$rootScope' ,'dashboardFactory','$stateParams','loadingFactory','financialYearFactory','$ionicModal','$timeout',
+                                function($scope,$rootScope, dashboardFactory,$stateParams,loadingFactory,financialYearFactory,$ionicModal,$timeout) {
   $scope.message="";
-
-  var currentFinancialYear=financialYearFactory.getCurrentFinancialYear();
-
-  $scope.financial_year_start_date = currentFinancialYear.start_date;
-
-  $scope.financial_year_end_date = currentFinancialYear.end_date;
-
-  $scope.selected_financial_year=1;
 
   loadingFactory.showLoader("Loading");
 
-  dashboardFactory.getDashboardData()
+  $timeout(function() {
+          $scope.financial_year_start_date=$rootScope.financial_year_start_date;
+
+          $scope.financial_year_end_date=$rootScope.financial_year_end_date;
+
+          $scope.current_financial_year=$rootScope.current_financial_year;
+
+          $scope.getDashboardData();
+    }, 1000);
+
+  $scope.getDashboardData=function(){
+    dashboardFactory.getDashboardData()
     .then(function (response) {
         $scope.dashboardData = response.data.data;
         $scope.dashboardData.tax_payments=10;
+
+        $scope.invoiced_amount="1800000";
+        $scope.received_amount="1100000";
+        $scope.outstanding_amount="900000";
         loadingFactory.hideLoader();
 
     }, function (error) {
@@ -368,6 +448,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
         loadingFactory.hideLoader();
     });
+  };
+  
     
     financialYearFactory.getFinancialYears()
       .then(function (response) {
@@ -440,4 +522,37 @@ angular.module('myapp.controllers', ['myapp.config'])
 
               return filteredArray;
       };
-  });
+  })
+.directive('positionBarsAndContent', function($timeout) {
+ return {
+    
+    restrict: 'AC',
+    
+    link: function(scope, element) {
+      
+      var offsetTop = 0;
+      
+      // Get the parent node of the ion-content
+      var parent = angular.element(element[0].parentNode);
+      
+      // Get all the headers in this parent
+      var headers = parent[0].getElementsByClassName('bar');
+
+      // Iterate through all the headers
+      for(x=0;x<headers.length;x++)
+      {
+        // If this is not the main header or nav-bar, adjust its position to be below the previous header
+        if(x > 0) {
+          headers[x].style.top = offsetTop + 'px';
+        }
+        
+        // Add up the heights of all the header bars
+        offsetTop = offsetTop + headers[x].offsetHeight;
+      }      
+      
+      // Position the ion-content element directly below all the headers
+      element[0].style.top = offsetTop + 'px';
+      
+    }
+  };  
+});

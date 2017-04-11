@@ -11,26 +11,41 @@
             <input type="search" placeholder="Search Invoice" ng-model="searchFilter" >
       </label>
       <button ng-if="searchFilter.length" class="button button-icon ion-android-close input-button" style="margin-right:35px;" ng-click="clearSearch()"> </button>
-      <button class="button button-icon ion-funnel input-button" ng-click="showInvoiceFilter()"> </button>
+      <button ng-show="searchFilter.length==0" class="button button-icon ion-calendar input-button" ng-click="changeFinancialYear()"> </button>
     </ion-header-bar>
   <ion-content>
-    <input type="hidden" name="S_Date" ng-model="dateFrom" />
-
-    <input type="hidden" name="S_Date" ng-model="dateTo" />
+   <div class="list year-list" ng-if="selected_financial_year.length!=0">
+        <label class="item item-input ">
+            Financial Year : {{financial_year_title}}
+        </label>
+    </div>
     <ion-list>
-     <ion-item collection-repeat="invoice in invoices | myfilter: dateFrom: dateTo | filter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
+    <!--myfilter: dateFrom: dateTo | -->
+     <ion-item collection-repeat="invoice in invoices | filter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
         <div class="item-image">
         	<div class="num_box">
         		{{invoice.bill_no}}
         	</div>
         </div>
         <h2>{{invoice.customer_name}}</h2>
-        <p><i class="ion-cash" ></i> Rs. {{invoice.net_amount}}</p>
+        <p><i class="ion-cash" ></i>{{invoice.net_amount | currency: ' Rs. '}}</p>
         <p><i class="ion-ios-calendar-outline" ></i> {{invoice.bill_date | date:'dd-MM-yyyy'}}</p>
         <p>{{invoice.description}}</p>
+        <div class="button-bar">
+          <a class="button button-small activated">First</a>
+          <a class="button button-small">Second</a>
+          <a class="button button-small" >Third</a>
+        </div>
          <ion-option-button class="button-assertive" ng-click="editInvoice(invoice)">Edit </ion-option-button>
       </ion-item>
     </ion-list>
+    <div class="row" ng-if="invoices.length==0">
+        <div class="col">
+            <div class="text-center">
+                <h5 style="text-align: center;">No Invoices available</h5>
+            </div>
+        </div>
+    </div>
   </ion-content>
 </ion-view>
 <!--<script type="text/ng-template" id="invoiceFilter.html">

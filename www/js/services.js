@@ -40,8 +40,8 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var invoiceFactory = {};
 
-    invoiceFactory.getInvoices = function () {
-        return $http.get(API_URL+'InvoiceController/search');
+    invoiceFactory.getInvoices = function (current_financial_year) {
+        return $http.get(API_URL+'InvoiceController/search&year_id='+current_financial_year);
     };
 
     invoiceFactory.getInvoice = function (id) {
@@ -132,19 +132,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     var financialYearFactory={};
 
     financialYearFactory.getCurrentFinancialYear=function(){
-        var currentMonth = moment().format('M');
-        var currentYear=moment().format('Y');
-
-        var nextYear=moment().add(1, 'years').format('Y');
-        if(currentMonth <= 3) {
-            currentYear-=1;
-            nextYear-=1;
-        }
-        var finYear={
-                'start_date':moment(currentYear+'-04-01').format('YYYY-MM-DD'),
-                'end_date':moment(nextYear+'-03-31').format('YYYY-MM-DD')
-        };
-        return finYear;
+        return $http.get(API_URL+'FinancialYearController/search&is_current_year=1');
     };
 
 
