@@ -825,3 +825,12 @@ p.box-title
 {
   background-color: #ddd;
 }
+.account-list .item
+{
+  padding:5px;
+}
+.account-widget
+{
+  margin-bottom: 10px;
+  background-color: #fff;
+}
