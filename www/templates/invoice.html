@@ -19,7 +19,7 @@
             Financial Year : {{financial_year_title}}
         </label>
     </div>
-    <ion-list>
+    <ion-list class="invoice_list">
     <!--myfilter: dateFrom: dateTo | -->
      <ion-item collection-repeat="invoice in invoices | filter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
         <div class="item-image">
@@ -31,12 +31,9 @@
         <p><i class="ion-cash" ></i>{{invoice.net_amount | currency: ' Rs. '}}</p>
         <p><i class="ion-ios-calendar-outline" ></i> {{invoice.bill_date | date:'dd-MM-yyyy'}}</p>
         <p>{{invoice.description}}</p>
-        <div class="button-bar">
-          <a class="button button-small activated">First</a>
-          <a class="button button-small">Second</a>
-          <a class="button button-small" >Third</a>
-        </div>
-         <ion-option-button class="button-assertive" ng-click="editInvoice(invoice)">Edit </ion-option-button>
+        <a class="button icon-left ion-ios-compose button-small button-outline button-calm " ng-click="editInvoice(invoice)">Edit</a>
+        <a class="button icon-left ion-android-done-all button-small button-outline button-balanced-dark" ng-click="showPaymentEntryModel(invoice)">Payment Entry</a>
+        <a class="button icon-left ion-ios-close button-small button-outline button-assertive">Cancel</a>
       </ion-item>
     </ion-list>
     <div class="row" ng-if="invoices.length==0">

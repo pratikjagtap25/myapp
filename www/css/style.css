@@ -819,7 +819,7 @@ p.box-title
 .main-amount
 {
   font-weight: bold;
-  font-size: 20px
+  font-size: 15px
 }
 .item-highlighted
 {
@@ -828,9 +828,44 @@ p.box-title
 .account-list .item
 {
   padding:5px;
+  font-size: 13px;
 }
 .account-widget
 {
   margin-bottom: 10px;
   background-color: #fff;
+}
+.button-bar .button{
+  border-color: #a2a2a2;
+}
+.invoice_list .button-stable
+{
+  border-color: #b2b2b2;
+}
+
+.color-white,
+.color-white:hover
+{
+  color: #fff !important;
+}
+.color-black,
+.color-black:hover
+{
+  color:#000 !important;
+}
+.invoice_list .item .button.button-balanced-dark.button-outline
+{
+  border-color: #175f2c;
+  background: transparent;
+  color: #175f2c;
+}
+.input-disabled
+{
+
+  border-color:#ccc;
+}
+.input-disabled,.input-disabled input
+{
+  background: #ddd;
+
 }

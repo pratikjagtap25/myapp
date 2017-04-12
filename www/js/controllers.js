@@ -91,6 +91,20 @@ angular.module('myapp.controllers', ['myapp.config'])
     value:""
   };
 
+  $scope.paymentEntry={
+    id:"",
+    bill_id:"",
+    bill_no:"",
+    company_id:1,
+    payment_type:"",
+    cheque_no:"",
+    cheque_date:"",
+    bank_name:"",
+    payment_date:"",
+    amount:"",
+    invoice_amount:""
+  };
+
   $timeout(function() {
           $scope.financial_year_start_date=$rootScope.financial_year_start_date;
 
@@ -143,7 +157,7 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.addNewInvoice=function(){
     $scope.showInvoiceModel();
 
-    $ionicListDelegate.closeOptionButtons();
+    //$ionicListDelegate.closeOptionButtons();
   };
 
   $scope.editInvoice=function(invoice){
@@ -153,11 +167,22 @@ angular.module('myapp.controllers', ['myapp.config'])
 
     $scope.invoiceButtonText="Save";
 
-    $ionicListDelegate.closeOptionButtons();
+    //$ionicListDelegate.closeOptionButtons();
 
     $scope.showInvoiceModel();
   };
 
+  $scope.calculateAmount=function(){
+    if($scope.invoice.gross_amount!="" && $scope.invoice.service_tax!="")
+    {
+      var tax_amount=(parseFloat($scope.invoice.gross_amount)*parseFloat($scope.invoice.service_tax))/100;
+      var total_amount=parseFloat($scope.invoice.gross_amount)+parseFloat(tax_amount);
+
+      $scope.invoice.service_tax_amount=tax_amount;
+
+      $scope.invoice.net_amount=total_amount;
+    }
+  };
   loadingFactory.showLoader("Loading");
 
   $scope.getInvoiceData=function(current_financial_year){
@@ -176,29 +201,6 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.clearSearch=function(){
     $scope.searchFilter="";
   };
-
-  $ionicModal.fromTemplateUrl('invoiceFilter.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.invoiceFilterModal = modal;
-  });
-
-  $scope.showInvoiceFilter=function(){
-    $scope.invoiceFilterModal.show();
-  };
-
-  $scope.closeInvoiceFilter=function(){
-    $scope.invoiceFilterModal.hide();
-
-    $scope.invoiceFilter={};
-  };
-
-
-  $ionicModal.fromTemplateUrl('templates/selectFinancialYear.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.financialYearModal = modal;
-    });
 
     $scope.changeFinancialYear=function(){
       //$scope.financialYearModal.show();
@@ -224,13 +226,7 @@ angular.module('myapp.controllers', ['myapp.config'])
       });
     };
 
-    $scope.closeFinancialYearModal=function(){
-      $scope.financialYearModal.hide();
-    };
-
   $scope.applyYearFilter=function(){
-
-    $scope.closeFinancialYearModal();
 
     loadingFactory.showLoader("");
 
@@ -243,6 +239,30 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.getInvoiceData($scope.year_data.value);
   };
 
+
+  $ionicModal.fromTemplateUrl('templates/paymentEntry.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.paymentEntryModal = modal;
+  });
+
+  $scope.showPaymentEntryModel=function(invoice){
+
+    $scope.paymentEntry.bill_no=invoice.bill_no;
+
+    $scope.paymentEntry.invoice_amount=invoice.net_amount;
+
+    $scope.paymentEntry.bill_id=invoice.id;
+
+    $scope.paymentEntryModal.show();
+  };
+
+  $scope.closePaymentEntryModel=function(){
+    $scope.paymentEntryModal.hide();
+
+    $scope.paymentEntry={};
+
+  };
 }])
 .controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams','loadingFactory',
                                 function($scope, invoiceFactory,$stateParams,loadingFactory) {
@@ -416,11 +436,25 @@ angular.module('myapp.controllers', ['myapp.config'])
     });
 
 }])
-.controller('DashboardCtrl',['$scope','$rootScope' ,'dashboardFactory','$stateParams','loadingFactory','financialYearFactory','$ionicModal','$timeout',
-                                function($scope,$rootScope, dashboardFactory,$stateParams,loadingFactory,financialYearFactory,$ionicModal,$timeout) {
+.controller('DashboardCtrl',['$scope','$rootScope' ,'dashboardFactory','$stateParams','loadingFactory','financialYearFactory','$ionicModal','$timeout','$ionicPopup',
+                                function($scope,$rootScope, dashboardFactory,$stateParams,loadingFactory,financialYearFactory,$ionicModal,$timeout,$ionicPopup) {
   $scope.message="";
 
   loadingFactory.showLoader("Loading");
+
+  $scope.invoiced_amount="00.00";
+
+  $scope.received_amount="00.00";
+
+  $scope.outstanding_amount="00.00";
+
+  $scope.currentFinancialYear={};
+
+  $scope.selected_financial_year="";
+
+  $scope.year_data={
+    value:""
+  };
 
   $timeout(function() {
           $scope.financial_year_start_date=$rootScope.financial_year_start_date;
@@ -428,6 +462,12 @@ angular.module('myapp.controllers', ['myapp.config'])
           $scope.financial_year_end_date=$rootScope.financial_year_end_date;
 
           $scope.current_financial_year=$rootScope.current_financial_year;
+
+          $scope.selected_financial_year=$rootScope.current_financial_year;
+
+          $scope.financial_year_title=$rootScope.financial_year_title;
+
+          $scope.year_data.value=$scope.selected_financial_year;
 
           $scope.getDashboardData();
     }, 1000);
@@ -449,7 +489,6 @@ angular.module('myapp.controllers', ['myapp.config'])
         loadingFactory.hideLoader();
     });
   };
-  
     
     financialYearFactory.getFinancialYears()
       .then(function (response) {
@@ -459,19 +498,42 @@ angular.module('myapp.controllers', ['myapp.config'])
           $scope.status = 'Unable to load customer data: ' + error.message;
     });
 
-    $ionicModal.fromTemplateUrl('templates/selectFinancialYear.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.financialYearModal = modal;
-    });
-
     $scope.changeFinancialYear=function(){
-      $scope.financialYearModal.show();
+      //$scope.financialYearModal.show();
+      // An elaborate, custom popup
+
+      $scope.changed_financial_year=$scope.selected_financial_year;
+
+      var myPopup = $ionicPopup.show({
+        template: '<ion-radio ng-repeat="option in financialYearList" ng-value="option.id" ng-model="year_data.value"> {{ option.year_title }} </ion-radio>',
+        title: 'Select Financial Year',
+        scope: $scope,
+        cssClass:'finYearPopup',
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: '<b>Apply</b>',
+            type: 'button-assertive',
+            onTap: function(e) {
+             $scope.applyYearFilter();
+            }
+          }
+        ]
+      });
     };
 
-    $scope.closeFinancialYearModal=function(){
-      $scope.financialYearModal.hide();
-    };
+    $scope.applyYearFilter=function(){
+
+    loadingFactory.showLoader("");
+
+    var radionSelectedYear=$scope.financialYearList.filter(function(item) {
+        return item.id === $scope.year_data.value;
+    })[0];
+
+    $scope.financial_year_title=radionSelectedYear.year_title;
+    
+    loadingFactory.hideLoader();
+  };
   
 }])
 

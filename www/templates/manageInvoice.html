@@ -27,19 +27,19 @@
         </label>
        <label class="item item-input">
           <span class="input-label">Gross Amount</span>
-          <input type="text"   ng-model="invoice.gross_amount">
+          <input type="text"   ng-model="invoice.gross_amount" ng-change="calculateAmount()">
         </label>
         <label class="item item-input">
           <span class="input-label">Tax (%)</span>
-          <input type="number"   ng-model="invoice.service_tax">
+          <input type="number"   ng-model="invoice.service_tax" ng-change="calculateAmount()">
         </label>
-        <label class="item item-input">
+        <label class="item item-input input-disabled">
           <span class="input-label">Tax Amount</span>
-          <input type="text"  ng-model="invoice.service_tax_amount">
+          <input type="text"  ng-disabled="true" ng-model="invoice.service_tax_amount">
         </label>
-        <label class="item item-input">
+        <label class="item item-input input-disabled">
           <span class="input-label">Total Amount</span>
-          <input type="text"  ng-model="invoice.net_amount">
+          <input type="text" ng-disabled="true"  ng-model="invoice.net_amount">
         </label>
         <label class="item">
           <button class="button button-block button-assertive" type="submit">{{invoiceButtonText}}</button>

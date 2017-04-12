@@ -21,7 +21,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     loginFactory.isAuthenticated=function(){
-        return ($localStorage.getObject('userDetails')!=null) ? true : false;
+        return ($localStorage.getObject('userDetails',null)!=null) ? true : false;
     };
 
     loginFactory.logoutUser=function(){
@@ -31,7 +31,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     loginFactory.userInfo=function(){
          
-        return $localStorage.getObject('userDetails');
+        return $localStorage.getObject('userDetails',null);
     };    
 
     return loginFactory;
