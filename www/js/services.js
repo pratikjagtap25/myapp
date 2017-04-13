@@ -146,6 +146,45 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     
     return financialYearFactory;
 }])
+.factory('taxationFactory', ['$http', 'API_URL', function ($http, API_URL) {
+
+    var taxationFactory = {};
+
+    taxationFactory.getTaxationList = function () {
+        return $http.get(API_URL+'TaxationController/search');
+    };
+
+    taxationFactory.getTaxDetails = function (id) {
+        return $http.get(API_URL + 'CustomerController/Get&id='+ id);
+    };
+
+    taxationFactory.insertTaxDetails = function (cust) {
+        return $http.post(API_URL, cust);
+    };
+
+    taxationFactory.updateTaxDetails= function (cust) {
+        return $http.put(API_URL + '/' + cust.ID, cust)
+    };
+
+    taxationFactory.deleteTaxDetails = function (id) {
+        return $http.delete(API_URL + '/' + id);
+    };
+
+    return taxationFactory;
+
+}])
+.factory('yearSummaryFactory', ['$http', 'API_URL','invoiceFactory','taxationFactory', 
+                        function ($http, API_URL,invoiceFactory,taxationFactory) {
+
+    var yearSummaryFactory = {};
+
+    taxationFactory.getTaxationList = function () {
+        return $http.get(API_URL+'TaxationController/search');
+    };
+
+    return taxationFactory;
+
+}])
 .factory('loadingFactory',['$ionicLoading',  function ($ionicLoading) {
     var loadingFactory={};
 

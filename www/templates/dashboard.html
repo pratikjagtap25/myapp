@@ -1,4 +1,4 @@
-<ion-view view-title="Dashboard" class="eventForm">
+<ion-view view-title="Dashboard" class="eventForm" cache-view="false">
   <div class="bar bar-subheader">
     <div class="title title-left padding-left " text-uppercase>
       {{financial_year_start_date | date:'MMM-y'}} To {{financial_year_end_date | date:'MMM-y'}}
@@ -72,11 +72,11 @@
       </div>
       <div class="row eventTab">
         <div class="col col-50">
-          <a href="#/app/employee">
+          <a href="#/app/year_summary">
             <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-ios-person"></i></div>
-              <h3>Employees</h3>
-              <p>{{dashboardData.employee_count}}</p>
+              <div class="icon"><i class="ion-ios-pie"></i></div>
+              <h3>Year Summary</h3>
+              <p></p>
             </div>
           </a>
         </div>
@@ -86,6 +86,17 @@
               <div class="icon"><i class="ion-cash"></i></div>
               <h3>Taxation</h3>
               <p>{{dashboardData.tax_payments}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row eventTab">
+        <div class="col col-50">
+          <a href="#/app/employee">
+            <div class="tabtext" ng-click="">
+              <div class="icon"><i class="ion-ios-person"></i></div>
+              <h3>Employees</h3>
+              <p>{{dashboardData.employee_count}}</p>
             </div>
           </a>
         </div>

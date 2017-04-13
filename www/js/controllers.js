@@ -536,7 +536,133 @@ angular.module('myapp.controllers', ['myapp.config'])
   };
   
 }])
+.controller('TaxationCtrl',['$scope','taxationFactory','$ionicModal','$timeout','$ionicListDelegate','loadingFactory','TAXATION_DOCS_URL',
+          function($scope,taxationFactory,$ionicModal,$timeout,$ionicListDelegate,loadingFactory,TAXATION_DOCS_URL){
 
+  $scope.TAXATION_DOCS_URL=TAXATION_DOCS_URL;
+
+  $scope.tax_details={};
+  
+  $scope.taxationHeader="Add Customer";
+
+  $scope.taxationButtonText="Add";
+
+  $ionicModal.fromTemplateUrl('templates/manageTaxation.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.taxationModal = modal;
+  });
+
+  $scope.showTaxDetailsModel=function(){
+    $scope.taxationModal.show();
+  };
+
+  $scope.closeTaxDetailsModel=function(){
+    $scope.taxationModal.hide();
+
+    $scope.tax_details={};
+
+    $scope.taxationHeader="Add Tax Details";
+  };
+
+  $scope.addNewTaxDetails=function(){
+    $scope.showTaxDetailsModel();
+
+    $ionicListDelegate.closeOptionButtons();
+  };
+
+  $scope.editTaxDetails=function(tax_details){
+    $scope.tax_details=tax_details;
+
+    $scope.taxationHeader="Edit Tax Details";
+
+    $scope.taxationButtonText="Save";
+
+    $ionicListDelegate.closeOptionButtons();
+
+    $scope.showTaxDetailsModel();
+  };
+
+  loadingFactory.showLoader("Loading");
+
+  taxationFactory.getTaxationList()
+      .then(function (response) {
+          $scope.taxationList = response.data.data;
+
+          loadingFactory.hideLoader();
+      }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+
+          loadingFactory.hideLoader();
+      });        
+  
+}])
+.controller('YearSummaryCtrl', ['$scope','$rootScope' ,'loadingFactory','financialYearFactory','$ionicSlideBoxDelegate','$timeout',
+                                function($scope,$rootScope,loadingFactory,financialYearFactory,$ionicSlideBoxDelegate,$timeout) {
+ 
+ $scope.currentFinancialYear={};
+
+ $scope.selected_financial_year="";
+
+ $scope.active_financial_year_index=0;
+
+  $timeout(function() {
+          $scope.current_financial_year=$rootScope.current_financial_year;
+
+          $scope.selected_financial_year=$rootScope.current_financial_year;
+
+          $scope.financial_year_title=$rootScope.financial_year_title;
+
+          $scope.getFinancialYearList();
+
+          
+    }, 1000);
+
+  $scope.getFinancialYearList=function(){
+    financialYearFactory.getFinancialYears()
+      .then(function (response) {
+          $scope.financialYearList = response.data.data;
+           $ionicSlideBoxDelegate.update();
+          $scope.active_financial_year_index= $scope.financialYearList.findIndex(function(element, index, array) {
+            if (element.id === $scope.selected_financial_year) {
+              return true;
+            }
+          });
+        }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+    });
+  };
+  // Called to navigate to the main app
+  $scope.next = function() {
+    
+
+    var next = $scope.financialYearList[($scope.active_financial_year_index+1)%$scope.financialYearList.length];
+
+    $scope.active_financial_year_index=$scope.active_financial_year_index+1%$scope.financialYearList.length;
+
+    $scope.financial_year_title=next.year_title;
+
+    console.log("current_financial_year_index",$scope.active_financial_year_index,"next",next);
+
+    $ionicSlideBoxDelegate.next();
+  };
+  $scope.previous = function() {
+    
+    var previous = $scope.financialYearList[($scope.active_financial_year_index-1)%$scope.financialYearList.length];
+
+    $scope.active_financial_year_index=($scope.active_financial_year_index-1)%$scope.financialYearList.length;
+
+    $scope.financial_year_title=previous.year_title;
+
+    console.log("current_financial_year_index",$scope.active_financial_year_index,"previous",previous);
+
+    $ionicSlideBoxDelegate.previous();
+  };
+  // Called each time the slide changes
+  $scope.slideChanged = function(index) {
+    $scope.slideIndex = index;
+  };
+}])
 .directive('formattedDate', function(dateFilter) {
   return {
     require: 'ngModel',

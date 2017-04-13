@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
 
-.run(function($ionicPlatform,$rootScope,loginFactory,financialYearFactory,$state) {
+.run(function($ionicPlatform,$rootScope,loginFactory,financialYearFactory,$state,$timeout) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -117,7 +117,7 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
       views: {
         'menuContent': {
           templateUrl: 'templates/taxation.html',
-          controller: 'PlaylistsCtrl'
+          controller: 'TaxationCtrl'
         }
       }
     })
@@ -138,7 +138,16 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
         controller: 'InvoiceDetailCtrl'
       }
     }
-  });
+  })
+  .state('app.year_summary', {
+      url: '/year_summary',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/yearSummary.html',
+          controller:'YearSummaryCtrl'
+        }
+      }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/dashboard');
 

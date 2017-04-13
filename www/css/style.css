@@ -869,3 +869,11 @@ p.box-title
   background: #ddd;
 
 }
+.taxationList .card-item-list .item
+{
+  padding:5px;
+}
+.year-slider
+{
+  height: 100%;
+}

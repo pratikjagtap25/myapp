@@ -1,5 +1,58 @@
 <ion-view view-title="Taxation">
-  <ion-content>
-    <h1>Taxation</h1>
+  <ion-nav-buttons side="secondary">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-plus-outline"
+        ng-click="addNewTaxDetails()"></button>
+    </div>
+  </ion-nav-buttons>
+  <ion-content class="taxationList">
+  	<div class="card" ng-repeat="taxDetails in taxationList | orderBy:'-paid_on'" href="#/app/taxation/{{taxDetails.id}}">
+	  <div class="item item-divider assertive">
+	     {{taxDetails.from_date | date:'MMM-y'}} To {{taxDetails.to_date | date:'MMM-y'}}
+	  </div>
+	  <div class="item item-text-wrap">
+	  	<ion-list class="card-item-list">
+		  <ion-item >
+		    <b>Invoice No.</b>
+		    <span class="item-note">From {{taxDetails.bill_from}} To {{taxDetails.bill_to}}</span>
+		  </ion-item>
+		  <ion-item >
+		    <b>Invoice Amount</b>
+		    <span class="item-note">{{taxDetails.bill_amount | currency: ' Rs. '}}</span>
+		  </ion-item>
+		  <ion-item >
+		    <b>Tax Details</b>
+		    <span class="item-note">{{taxDetails.tax_details}}</span>
+		  </ion-item>
+		  <ion-item >
+		    <b>Tax Amount </b>
+		    <span class="item-note">{{taxDetails.tax_amount | currency: ' Rs. '}}</span>
+		  </ion-item>
+		  <ion-item >
+		    <b>Paid On </b>
+		    <span class="item-note">{{taxDetails.paid_on | date:"dd-MMM-yyyy"}}</span>
+		  </ion-item>
+		  <ion-item >
+		    <b>Attachment</b>
+		    <span class="item-note"><a ng-href="{{TAXATION_DOCS_URL+taxDetails.attachment}}" > View</a></span>
+		  </ion-item>
+		</ion-list>
+	  </div>
+	  <div class="item item-divider">
+	   <button class="button  ion-ios-compose button-small button-assertive" ng-click="editTaxDetails(taxDetails)">
+		  Edit
+		</button>
+	  </div>
+	</div>
+     <!--<ion-list>
+     <ion-item ng-repeat="taxDetails in taxationList" href="#/app/taxation/{{taxDetails.id}}" class="item-thumbnail-left">
+       <img ng-src="{{customer.logo}}">
+        <h2>{{customer.customer_name}}</h2>
+        <p><i class="ion-person" ></i> {{customer.contact_person_name}}</p>
+        <p><i class="ion-at" ></i> <a href="mailto:{{customer.email}}" >{{customer.email}}</a></p>
+        <p><i class="ion-android-call" ></i> <a href="tel:{{customer.phone}}" >{{customer.phone}} </a></p>
+         <ion-option-button class="button-assertive" ng-click="editTaxDetails(customer)">Edit </ion-option-button>
+      </ion-item>
+    </ion-list>-->
   </ion-content>
 </ion-view>
