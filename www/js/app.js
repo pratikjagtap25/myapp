@@ -21,6 +21,16 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
     }
   });
 
+  $rootScope.financial_year_start_date="";
+
+  $rootScope.financial_year_end_date="";
+
+  $rootScope.current_financial_year="";
+
+  $rootScope.financial_year_title="";
+
+  $rootScope.selected_financial_year="";
+
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     if (toState.name !== 'app.login' && !loginFactory.isAuthenticated()) {
       event.preventDefault();
@@ -28,7 +38,7 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
     }
   });
 
-  if(loginFactory.isAuthenticated())
+  /*if(loginFactory.isAuthenticated())
   {
       financialYearFactory.getCurrentFinancialYear()
       .then(function (response) {
@@ -45,7 +55,7 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
         }, function (error) {
           $scope.status = 'Unable to load customer data: ' + error.message;
     });
-  }
+  }*/
 })
 
 .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
@@ -149,7 +159,10 @@ angular.module('myapp', ['ionic', 'myapp.controllers','myapp.services'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/dashboard');
+   $urlRouterProvider.otherwise(function($injector, $location){
+      var $state = $injector.get("$state");
+      $state.go('app.login');
+  });
 
   $ionicConfigProvider.backButton.previousTitleText(false).text('');
 });

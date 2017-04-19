@@ -9,9 +9,13 @@
     <form ng-submit="doRegister()">
       <div class="list">
         <input type="hidden" ng-model="paymentEntry.id" >
-        <label class="item item-input">
+        <label class="item item-input input-disabled" >
           <span class="input-label">Invoice No.</span>
-          <input type="text" ng-model="paymentEntry.bill_no">
+          <input type="text" ng-disabled="true" ng-model="paymentEntry.bill_no">
+        </label>
+        <label class="item item-input input-disabled">
+          <span class="input-label">Invoice Amount</span>
+          <input type="text" ng-disabled="true"  ng-model="paymentEntry.invoice_amount">
         </label>
          <label class="item item-input">
           <span class="input-label">Payment Date</span>
@@ -38,10 +42,7 @@
           <span class="input-label">Bank Name</span>
          <input type="text" ng-model="paymentEntry.bank_name">
         </label>
-        <label class="item item-input input-disabled">
-          <span class="input-label">Invoice Amount</span>
-          <input type="text" ng-disabled="true"  ng-model="paymentEntry.invoice_amount">
-        </label>
+        
        <label class="item item-input">
           <span class="input-label">Payment Amount</span>
           <input type="text"   ng-model="paymentEntry.amount">

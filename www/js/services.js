@@ -1,32 +1,59 @@
 'use strict';
 
 angular.module('myapp.services', ['ngResource','myapp.config'])
-.factory('loginFactory', ['$http', 'API_URL','$localStorage', function ($http, API_URL,$localStorage) {
+.factory('loginFactory', ['$http', 'API_URL','$localStorage','$httpParamSerializerJQLike','$q',
+                        function ($http, API_URL,$localStorage,$httpParamSerializerJQLike,$q) {
 
     var loginFactory = {};
 
+     var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
     loginFactory.authenticateUser = function (loginData) {
+        return $http.post(API_URL+'UserController/Login', loginData,
+                {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                    transformRequest: transform
+                }
+            )
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        var response_data=response.data.data;
+                        var userDetails={
+                                        'first_name':response_data.first_name,
+                                        'last_name':response_data.last_name,
+                                        'user_id':response_data.user_id,
+                                        'employee_id':response_data.employee_id,
+                                        'company_id':response_data.company_id,
+                                        'photo': response_data.photo,
+                                        'designation': response_data.designation,
+                                        'gender':response_data.gender,
+                                        'login_time':new Date()
+                                        };
 
-        return $http.post('http://httpbin.org/post',loginData)
-                .success( function(response){
-                    var userDetails={'username':loginData.username,'login_time':new Date()};
+                        $localStorage.setObject('userDetails',{});
 
-                    $localStorage.setObject('userDetails',{});
+                        $localStorage.setObject('userDetails',userDetails);    
 
-                    $localStorage.setObject('userDetails',userDetails);
-                })
-                .error(function(error){
-
-                });
+                        return {loginSuccess:true};
+                    }
+                    else
+                    {
+                        return {loginSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            })
     };
 
     loginFactory.isAuthenticated=function(){
-        return ($localStorage.getObject('userDetails',null)!=null) ? true : false;
+        return (!!$localStorage.getObject('userDetails',null)) ? true : false;
     };
 
     loginFactory.logoutUser=function(){
          
-        return $localStorage.setObject('userDetails',{});
+        return $localStorage.remove('userDetails');
     };
 
     loginFactory.userInfo=function(){
@@ -120,8 +147,8 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var dashboardFactory = {};
 
-    dashboardFactory.getDashboardData = function () {
-        return $http.get(API_URL+'DashboardController/Get');
+    dashboardFactory.getDashboardData = function (selected_financial_year) {
+        return $http.get(API_URL+'DashboardController/Get&year_id='+selected_financial_year);
     };
 
     return dashboardFactory;
@@ -192,12 +219,10 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
         $ionicLoading.show({
             template: '<ion-spinner></ion-spinner> '+message
         });
-        console.log(message+" show");
     };
 
      loadingFactory.hideLoader=function(message){
         $ionicLoading.hide();
-        console.log(" hide");
     };
 
     return loadingFactory;
@@ -215,6 +240,9 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
             },
             getObject:function(key,defaultValue){
                 return JSON.parse($window.localStorage[key] || defaultValue);
+            },
+            remove:function(key){
+              $window.localStorage.removeItem(key);  
             }
         }
 }]);

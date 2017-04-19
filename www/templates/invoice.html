@@ -21,7 +21,7 @@
     </div>
     <ion-list class="invoice_list">
     <!--myfilter: dateFrom: dateTo | -->
-     <ion-item collection-repeat="invoice in invoices | filter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
+     <ion-item collection-repeat="invoice in invoices | invoicefilter:searchFilter" href="#/app/invoice/{{invoice.id}}" class="item-thumbnail-left">
         <div class="item-image">
         	<div class="num_box">
         		{{invoice.bill_no}}

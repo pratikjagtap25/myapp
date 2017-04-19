@@ -20,8 +20,8 @@
       <ion-list>
         <ion-item class="item-avatar">
            <img src="img/ionic.png">
-            <h2>{{userInfo.username}}</h2>
-            <p>{{userInfo.login_time | date:medium}}</p>
+            <h2>{{userInfo.first_name+' '+userInfo.last_name}}</h2>
+            <p>{{userInfo.designation}}</p>
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/dashboard" class="item-icon-left">
           <i class="icon ion-ios-speedometer-outline"></i>

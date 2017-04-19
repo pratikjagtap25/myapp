@@ -12,7 +12,11 @@ angular.module('myapp.controllers', ['myapp.config'])
 
   $scope.isLoggedIn=loginFactory.isAuthenticated();
 
-  $scope.userInfo=loginFactory.userInfo();
+  $timeout(function(){
+    $scope.userInfo=loginFactory.userInfo();
+  },200);
+
+  
 
   $scope.logoutUser=function(){
     loadingFactory.showLoader("Logging out");
@@ -38,12 +42,12 @@ angular.module('myapp.controllers', ['myapp.config'])
     { title: 'Cowbell', id: 6 }
   ];
 })
-.controller('LoginCtrl', ['$scope', '$ionicSideMenuDelegate','loginFactory','loadingFactory','$localStorage','$state','$ionicViewService',
-                  function($scope,$ionicSideMenuDelegate,loginFactory,loadingFactory,$localStorage,$state,$ionicViewService) {
+.controller('LoginCtrl', ['$scope', '$ionicSideMenuDelegate','loginFactory','loadingFactory','$localStorage','$state','$ionicViewService','$ionicPopup',
+                  function($scope,$ionicSideMenuDelegate,loginFactory,loadingFactory,$localStorage,$state,$ionicViewService,$ionicPopup) {
 
   $ionicSideMenuDelegate.canDragContent(false);
 
-  $scope.loginData = {'username':'PratikJ','password':'1112233'};
+  $scope.loginData = {'username':'superuser','password':'superuser'};
 
   $scope.doLogin = function(loginData) {
 
@@ -51,26 +55,41 @@ angular.module('myapp.controllers', ['myapp.config'])
 
     loginFactory.authenticateUser($scope.loginData)
     .then(function (response) {
+      if(response.loginSuccess)
+      {
+        $ionicViewService.nextViewOptions({
+          disableBack: true
+        });
 
-      $ionicViewService.nextViewOptions({
-        disableBack: true
-      });
+        $scope.loginData = {};
 
-      $scope.loginData = {};
+        loadingFactory.hideLoader();
 
-      loadingFactory.hideLoader();
+        $state.go('app.dashboard');
+      }
+      else
+      {
+        loadingFactory.hideLoader();
 
-      $state.go('app.dashboard');
+        var alertPopup = $ionicPopup.alert({
+         title: 'Error',
+         template: 'Invalid Username or Password !!!!'
+       });
+
+        $state.go('app.login'); 
+      }
+      
 
     }, function (error) {
         $scope.status = 'Unable to load customer data: ' + error.message;
+       
         loadingFactory.hideLoader();
     });
   };
 
 }])
-.controller('InvoiceCtrl',['$scope','$rootScope' ,'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearFactory','loadingFactory','$ionicPopup',
-                  function($scope,$rootScope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearFactory,loadingFactory,$ionicPopup) {
+.controller('InvoiceCtrl',['$scope','$rootScope' ,'invoiceFactory','$ionicModal','$timeout','$ionicListDelegate','financialYearFactory','loadingFactory','$ionicPopup','customerFactory',
+                  function($scope,$rootScope, invoiceFactory,$ionicModal,$timeout,$ionicListDelegate,financialYearFactory,loadingFactory,$ionicPopup,customerFactory) {
   $scope.message="";
 
   $scope.invoice={};
@@ -90,6 +109,8 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.year_data={
     value:""
   };
+
+  $scope.customerList=[];
 
   $scope.paymentEntry={
     id:"",
@@ -112,13 +133,13 @@ angular.module('myapp.controllers', ['myapp.config'])
 
           $scope.current_financial_year=$rootScope.current_financial_year;
 
-          $scope.selected_financial_year=$rootScope.current_financial_year;
+          $scope.selected_financial_year=$rootScope.selected_financial_year;
 
           $scope.financial_year_title=$rootScope.financial_year_title;
 
           $scope.year_data.value=$scope.selected_financial_year;
 
-          $scope.getInvoiceData($scope.current_financial_year);
+          $scope.getInvoiceData($scope.selected_financial_year);
     }, 1000);
 
   financialYearFactory.getFinancialYears()
@@ -234,7 +255,9 @@ angular.module('myapp.controllers', ['myapp.config'])
         return item.id === $scope.year_data.value;
     })[0];
 
-    $scope.financial_year_title=radionSelectedYear.year_title;
+   $scope.financial_year_title=$rootScope.financial_year_title=radionSelectedYear.year_title;
+
+    $scope.selected_financial_year=$rootScope.selected_financial_year=radionSelectedYear.id;
 
     $scope.getInvoiceData($scope.year_data.value);
   };
@@ -263,6 +286,21 @@ angular.module('myapp.controllers', ['myapp.config'])
     $scope.paymentEntry={};
 
   };
+
+  $scope.getCustomers=function(){
+    customerFactory.getCustomers()
+      .then(function (response) {
+          $scope.customerList= response.data.data;
+
+          loadingFactory.hideLoader();
+      }, function (error) {
+          $scope.status = 'Unable to load customer data: ' + error.message;
+
+          loadingFactory.hideLoader();
+      });    
+  }
+
+  $scope.getCustomers();
 }])
 .controller('InvoiceDetailCtrl',['$scope', 'invoiceFactory','$stateParams','loadingFactory',
                                 function($scope, invoiceFactory,$stateParams,loadingFactory) {
@@ -329,7 +367,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
   loadingFactory.showLoader("Loading");
 
-  customerFactory.getCustomers()
+  $scope.getCustomers=function(){
+    customerFactory.getCustomers()
       .then(function (response) {
           $scope.customers = response.data.data;
 
@@ -338,8 +377,10 @@ angular.module('myapp.controllers', ['myapp.config'])
           $scope.status = 'Unable to load customer data: ' + error.message;
 
           loadingFactory.hideLoader();
-      });        
-  
+      });    
+  }
+
+  $scope.getCustomers();
 }])
 .controller('CustomerDetailCtrl',['$scope', 'customerFactory','$stateParams','loadingFactory',
                         function($scope, customerFactory,$stateParams,loadingFactory) {
@@ -455,32 +496,45 @@ angular.module('myapp.controllers', ['myapp.config'])
   $scope.year_data={
     value:""
   };
+  
 
-  $timeout(function() {
-          $scope.financial_year_start_date=$rootScope.financial_year_start_date;
 
-          $scope.financial_year_end_date=$rootScope.financial_year_end_date;
+  $scope.getCurrentFinancialYearData=function(){
+    financialYearFactory.getCurrentFinancialYear()
+        .then(function (response) {
+             var currentFinancialYear = response.data.data;
 
-          $scope.current_financial_year=$rootScope.current_financial_year;
+             $rootScope.financial_year_start_date =$scope.financial_year_start_date= currentFinancialYear[0].year_start_date;
 
-          $scope.selected_financial_year=$rootScope.current_financial_year;
+              $rootScope.financial_year_end_date =$scope.financial_year_end_date= currentFinancialYear[0].year_end_date;
 
-          $scope.financial_year_title=$rootScope.financial_year_title;
+              $rootScope.current_financial_year=$scope.current_financial_year=currentFinancialYear[0].id;
 
-          $scope.year_data.value=$scope.selected_financial_year;
+              $rootScope.financial_year_title=currentFinancialYear[0].year_title;
 
-          $scope.getDashboardData();
-    }, 1000);
+              $rootScope.selected_financial_year=$scope.selected_financial_year=currentFinancialYear[0].id;
 
-  $scope.getDashboardData=function(){
-    dashboardFactory.getDashboardData()
+              $scope.financial_year_title=$rootScope.financial_year_title;
+
+              $scope.year_data.value=$scope.selected_financial_year;
+
+              $scope.getDashboardData($rootScope.selected_financial_year);
+
+          }, function (error) {
+            $scope.status = 'Unable to load customer data: ' + error.message;
+      });
+  }
+
+  $scope.getCurrentFinancialYearData();
+
+  $scope.getDashboardData=function(selected_financial_year){
+
+    dashboardFactory.getDashboardData(selected_financial_year)
     .then(function (response) {
         $scope.dashboardData = response.data.data;
-        $scope.dashboardData.tax_payments=10;
 
-        $scope.invoiced_amount="1800000";
-        $scope.received_amount="1100000";
-        $scope.outstanding_amount="900000";
+        $scope.dashboardData.tax_payments=10;
+        $scope.outstanding_amount=parseFloat($scope.dashboardData.invoice_details.invoice_amount)-parseFloat($scope.dashboardData.invoice_details.received_amount);
         loadingFactory.hideLoader();
 
     }, function (error) {
@@ -530,8 +584,12 @@ angular.module('myapp.controllers', ['myapp.config'])
         return item.id === $scope.year_data.value;
     })[0];
 
-    $scope.financial_year_title=radionSelectedYear.year_title;
-    
+    $scope.financial_year_title=$rootScope.financial_year_title=radionSelectedYear.year_title;
+
+    $scope.selected_financial_year=$rootScope.selected_financial_year=radionSelectedYear.id;
+
+    $scope.getDashboardData($scope.selected_financial_year);
+
     loadingFactory.hideLoader();
   };
   
@@ -701,15 +759,38 @@ angular.module('myapp.controllers', ['myapp.config'])
               return items;
             }
 
-              angular.forEach(items, function(obj){
-                  var invoiceDate = obj.invoice_date;        
-                  if(moment(invoiceDate).isAfter(startDate) && moment(invoiceDate).isBefore(endDate)) {
-                      filteredArray.push(obj);
-                  }
-              });
+            angular.forEach(items, function(obj){
+                var invoiceDate = obj.invoice_date;        
+                if(moment(invoiceDate).isAfter(startDate) && moment(invoiceDate).isBefore(endDate)) {
+                    filteredArray.push(obj);
+                }
+            });
 
               return filteredArray;
       };
+  })
+  .filter('invoicefilter',function($filter){
+    return function(items, searchStr) {
+      if (!searchStr) {
+        return items;
+      }
+
+      return items.filter(function(element, index, array) {
+        var isNumber = /^[0-9.]+$/.test(searchStr);
+        if(isNumber)
+        {
+          return element.bill_no.includes(searchStr);
+        }
+        else
+        {
+          return element.customer_name.toLowerCase().includes(searchStr.toLowerCase()) ||
+                 element.bill_date.includes(searchStr) ||
+                 element.description.toLowerCase().includes(searchStr.toLowerCase());
+        }
+        
+      });
+
+    };
   })
 .directive('positionBarsAndContent', function($timeout) {
  return {
