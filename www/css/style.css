@@ -877,3 +877,35 @@ p.box-title
 {
   height: 100%;
 }
+.item-icon-left .icon.fa, 
+.item-icon-right .icon.fa
+{
+  font-size: 25px;
+}
+.logo {
+    display: block;
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+}
+.logoText {
+    text-align: center;
+    font-size: 28px;
+    font-family: fantasy;
+}
+.textCenter {
+    text-align: center;
+}
+.loading span {
+  float: right; 
+padding-top:5px;
+padding-left: 5px
+}
+.item-right
+{
+  float: right;
+}
+.item-header
+{
+  background-color: #ddd;
+}

@@ -1,22 +1,22 @@
 <ion-modal-view>
-  <ion-header-bar class="bar-assertive">
-    <h1 class="title">Financial Year</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeFinancialYearModal()">Close</button>
-    </div>
-  </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doRegister()">
-      <div class="list">
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Lightsaber
-          </div>
-          <select ng-model="selected_financial_year" >
-            <option ng-repeat="option in financialYearList" value="{{option.id}}">{{option.year_title}}</option>
-          </select>
-        </label>
-      </div>
-    </form>
-  </ion-content>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">Financial Year</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeFinancialYearModal()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="doRegister()">
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Lightsaber
+                    </div>
+                    <select ng-model="selected_financial_year">
+                        <option ng-repeat="option in financialYearList" value="{{option.id}}">{{option.year_title}}</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+    </ion-content>
 </ion-modal-view>

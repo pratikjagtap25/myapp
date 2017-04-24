@@ -1,0 +1,62 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">Edit Company Info.</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeCompanyInfoModel()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="UpdateCompanyProfile()">
+            <div class="list">
+                <input type="hidden" ng-model="companyInfoEdit.company_id">
+                <label class="item item-input">
+                    <span class="input-label">Company Name</span>
+                    <input type="text" ng-model="companyInfoEdit.company_name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Company Code</span>
+                    <input type="text" ng-model="companyInfoEdit.company_code">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Office Address</span>
+                    <textarea ng-model="companyInfoEdit.office_address" rows="8" cols="10"></textarea>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Service Tax No: </span>
+                    <input type="text" ng-model="companyInfoEdit.service_tax_no">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">PAN No.</span>
+                    <input type="text" ng-model="companyInfoEdit.pan_no">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">GST No.</span>
+                    <input type="email" ng-model="companyInfoEdit.gst_no">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">City</span>
+                    <input type="text" ng-model="companyInfoEdit.office_city">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Pin</span>
+                    <input type="text" ng-model="companyInfoEdit.office_pin">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" ng-model="companyInfoEdit.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Phone</span>
+                    <input type="text" ng-model="companyInfoEdit.office_phone">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Website</span>
+                    <input type="text" ng-model="companyInfoEdit.website">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-assertive" type="submit">Update</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

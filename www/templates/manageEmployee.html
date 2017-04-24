@@ -1,59 +1,59 @@
 <ion-modal-view>
-  <ion-header-bar class="bar-assertive">
-    <h1 class="title">{{employeeHeader}}</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeEmployeeModel()">Close</button>
-    </div>
-  </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doRegister()">
-      <div class="list">
-        <input type="hidden" ng-model="employee.id" >
-        <label class="item item-input">
-          <span class="input-label">First Name</span>
-          <input type="text" ng-model="employee.first_name">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Middle Name</span>
-          <input type="text" ng-model="employee.middle_name">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Last Name</span>
-          <input type="text" ng-model="employee.last_name">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Email</span>
-          <input type="email"   ng-model="employee.email_id">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Phone</span>
-          <input type="text"   ng-model="employee.mobile_phone">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Birthdate</span>
-          <input type="text" ng-model="employee.date_of_birth" formatted-date format="dd-MM-yyyy">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Joining Date</span>
-          <input type="text" ng-model="employee.date_of_joining" formatted-date format="dd-MM-yyyy">
-        </label>
-        <label class="item item-input item-select">
-  		    <div class="input-label">
-  		      Gender
-  		    </div>
-  		    <select ng-model="employee.gender">
-  		      <option value="male">Male</option>
-  		      <option value="female">Female</option>
-  		    </select>
-		    </label>
-       	<label class="item item-input item-stacked-label">
-          <span class="input-label">Address</span>
-          <textarea  ng-model="employee.current_address" rows="8" cols="10"></textarea>
-        </label>
-        <label class="item">
-          <button class="button button-block button-assertive" type="submit">{{employeeButtonText}}</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">{{employeeHeader}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeEmployeeModel()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="ManageEmployeeSubmit()">
+            <div class="list">
+                <input type="hidden" ng-model="employee.id">
+                <label class="item item-input">
+                    <span class="input-label">First Name</span>
+                    <input type="text" ng-model="employee.first_name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Middle Name</span>
+                    <input type="text" ng-model="employee.middle_name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" ng-model="employee.last_name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" ng-model="employee.email_id">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Phone</span>
+                    <input type="text" ng-model="employee.mobile_phone">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Birthdate</span>
+                    <input type="text" ng-model="employee.date_of_birth" formatted-date format="dd-MM-yyyy">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Joining Date</span>
+                    <input type="text" ng-model="employee.date_of_joining" formatted-date format="dd-MM-yyyy">
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Gender
+                    </div>
+                    <select ng-model="employee.gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Address</span>
+                    <textarea ng-model="employee.current_address" rows="8" cols="10"></textarea>
+                </label>
+                <label class="item">
+                    <button class="button button-block button-assertive" type="submit">{{employeeButtonText}}</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
 </ion-modal-view>

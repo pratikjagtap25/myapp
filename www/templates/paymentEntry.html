@@ -1,56 +1,56 @@
 <ion-modal-view>
-  <ion-header-bar class="bar-assertive">
-    <h1 class="title">Payment Entry</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closePaymentEntryModel()">Close</button>
-    </div>
-  </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doRegister()">
-      <div class="list">
-        <input type="hidden" ng-model="paymentEntry.id" >
-        <label class="item item-input input-disabled" >
-          <span class="input-label">Invoice No.</span>
-          <input type="text" ng-disabled="true" ng-model="paymentEntry.bill_no">
-        </label>
-        <label class="item item-input input-disabled">
-          <span class="input-label">Invoice Amount</span>
-          <input type="text" ng-disabled="true"  ng-model="paymentEntry.invoice_amount">
-        </label>
-         <label class="item item-input">
-          <span class="input-label">Payment Date</span>
-          <input type="date" ng-model="paymentEntry.payment_date" >
-        </label>
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Payment Type
-          </div>
-          <select ng-model="paymentEntry.payment_type">
-            <option value="By Cheque">By Cheque</option>
-            <option value="Online">Online</option>
-          </select>
-        </label>
-         <label class="item item-input" ng-if="paymentEntry.payment_type == 'By Cheque'">
-          <span class="input-label">Cheque No.</span>
-          <input type="number" ng-model="paymentEntry.cheque_no">
-        </label>
-        <label class="item item-input" ng-if="paymentEntry.payment_type == 'By Cheque'">
-          <span class="input-label">Cheque Date</span>
-          <input type="date" ng-model="paymentEntry.cheque_date">
-        </label>
-       <label class="item item-input item-stacked-label" ng-if="paymentEntry.payment_type == 'Online'">
-          <span class="input-label">Bank Name</span>
-         <input type="text" ng-model="paymentEntry.bank_name">
-        </label>
-        
-       <label class="item item-input">
-          <span class="input-label">Payment Amount</span>
-          <input type="text"   ng-model="paymentEntry.amount">
-        </label>
-        <label class="item">
-          <button class="button button-block button-assertive" type="submit">Save</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">Payment Entry</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closePaymentEntryModel()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form ng-submit="ManagePaymentEntrySubmit()">
+            <div class="list">
+                <input type="hidden" ng-model="paymentEntry.id">
+                <label class="item item-input input-disabled">
+                    <span class="input-label">Invoice No.</span>
+                    <input type="text" ng-disabled="true" ng-model="paymentEntry.bill_no">
+                </label>
+                <label class="item item-input input-disabled">
+                    <span class="input-label">Invoice Amount</span>
+                    <input type="text" ng-disabled="true" ng-model="paymentEntry.invoice_amount">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Payment Date</span>
+                    <input type="date" ng-model="paymentEntry.payment_date">
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Payment Type
+                    </div>
+                    <select ng-model="paymentEntry.payment_type">
+                        <option value="By Cheque">By Cheque</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </label>
+                <label class="item item-input" ng-if="paymentEntry.payment_type == 'By Cheque'">
+                    <span class="input-label">Cheque No.</span>
+                    <input type="number" ng-model="paymentEntry.cheque_no">
+                </label>
+                <label class="item item-input" ng-if="paymentEntry.payment_type == 'By Cheque'">
+                    <span class="input-label">Cheque Date</span>
+                    <input type="date" ng-model="paymentEntry.cheque_date">
+                </label>
+                <label class="item item-input item-stacked-label" ng-if="paymentEntry.payment_type == 'Online'">
+                    <span class="input-label">Bank Name</span>
+                    <input type="text" ng-model="paymentEntry.bank_name">
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Payment Amount</span>
+                    <input type="text" ng-model="paymentEntry.amount">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-assertive" type="submit">Save</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
 </ion-modal-view>

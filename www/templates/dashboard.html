@@ -1,107 +1,110 @@
 <ion-view view-title="Dashboard" class="eventForm" cache-view="false">
-  <div class="bar bar-subheader">
-    <div class="title title-left padding-left " text-uppercase>
-      {{financial_year_title}}
-    </div>
-    <button class="button button-icon ion-calendar input-button" ng-click="changeFinancialYear()"></button>
-  </div>
-  <ion-content class="has-subheader">
-  	<div class="row account-widget">
-  		<div class="col col-30">
-  			 <svg width="140" height="140" aria-label="A chart." style="overflow: hidden;">
-                <defs id="defs"></defs>
-                <rect x="0" y="0" width="140" height="140" stroke="none" stroke-width="0" fill="#ffffff"></rect>
-                <g>
-                  <path d="M70,70L26.674934092234324,115.73771599115724A63,63,0,0,1,70,7L70,70A0,0,0,0,0,70,70" stroke="#ffffff" stroke-width="4" fill="#98e6ae">
-                  </path>
-                </g>
-                <g>
-                  <path d="M70,70L70,7A63,63,0,1,1,26.674934092234324,115.73771599115724L70,70A0,0,0,1,0,70,70" stroke="#ffffff" stroke-width="4" fill="#f6918a">
-                  </path>
-                </g>
-                <g></g>
-                <circle cx="422" cy="70" r="66" fill="#FFFFFF" stroke="none" stroke-width="0"></circle>
-              </svg>
+    <div class="bar bar-subheader">
+        <div class="title title-left padding-left " text-uppercase>
+            {{financial_year_title}}
         </div>
-        <div class="col col-70">
-          <div class="list account-list">
-            <div class="item item-divider">
-              Amount Details
+        <button class="button button-icon ion-calendar input-button" ng-click="changeFinancialYear()"></button>
+    </div>
+    <ion-content class="has-subheader">
+        <div class="row account-widget">
+            <div class="col col-30">
+                <!--<svg width="140" height="140" aria-label="A chart." style="overflow: hidden;">
+                    <defs id="defs"></defs>
+                    <rect x="0" y="0" width="140" height="140" stroke="none" stroke-width="0" fill="#ffffff"></rect>
+                    <g>
+                        <path d="M70,70L26.674934092234324,115.73771599115724A63,63,0,0,1,70,7L70,70A0,0,0,0,0,70,70" stroke="#ffffff" stroke-width="4" fill="#98e6ae">
+                        </path>
+                    </g>
+                    <g>
+                        <path d="M70,70L70,7A63,63,0,1,1,26.674934092234324,115.73771599115724L70,70A0,0,0,1,0,70,70" stroke="#ffffff" stroke-width="4" fill="#f6918a">
+                        </path>
+                    </g>
+                    <g></g>
+                    <circle cx="422" cy="70" r="66" fill="#FFFFFF" stroke="none" stroke-width="0"></circle>
+                </svg>-->
+                <canvas id="pie" class="chart chart-pie"
+                  chart-data="data" chart-labels="labels" chart-colors="colors" chart-options="graphOptions" >
+                </canvas> 
             </div>
-            <a class="item" href="javascript:void(0);">
+            <div class="col col-70">
+                <div class="list account-list">
+                    <div class="item item-divider">
+                        Amount Details
+                    </div>
+                    <a class="item" href="javascript:void(0);">
                 Invoiced 
               <span class="item-note">
                 {{dashboardData.invoice_details.invoice_amount | currency: ' Rs. ' }}
               </span>
             </a>
 
-            <a class="item" href="javascript:void(0);">
+                    <a class="item" href="javascript:void(0);">
               Received 
              <span class="item-note">
                 {{dashboardData.invoice_details.received_amount | currency: ' Rs. ' }}
               </span>
             </a>
-            <a class="item item-highlighted" href="javascript:void(0);">
+                    <a class="item item-highlighted" href="javascript:void(0);">
               Outstanding 
               <span class="item-note main-amount">
                 {{outstanding_amount | currency: ' Rs. ' }}
               </span>
             </a>
-          </div>
-  		</div>
-  	</div>
-    <div class="row eventTab">
-        <div class="col col-50">
-          <a href="#/app/invoice">
-            <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-ios-list"></i></div>
-              <h3>Invoices</h3>
-              <p>{{dashboardData.invoice_details.invoice_count}}</p>
+                </div>
             </div>
-          </a>
         </div>
-        <div class="col col-50">
-          <a href="#/app/customer">
-            <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-ios-people"></i></div>
-              <h3>Customers</h3>
-              <p>{{dashboardData.customer_count}}</p>
+        <div class="row eventTab">
+            <div class="col col-50">
+                <a href="#/app/invoice">
+                    <div class="tabtext" ng-click="">
+                        <div class="icon"><i class="ion-ios-list"></i></div>
+                        <h3>Invoices</h3>
+                        <p>{{dashboardData.invoice_details.invoice_count}}</p>
+                    </div>
+                </a>
             </div>
-          </a>
-        </div>
-      </div>
-      <div class="row eventTab">
-        <div class="col col-50">
-          <a href="#/app/year_summary">
-            <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-ios-pie"></i></div>
-              <h3>Year Summary</h3>
-              <p></p>
+            <div class="col col-50">
+                <a href="#/app/customer">
+                    <div class="tabtext" ng-click="">
+                        <div class="icon"><i class="ion-ios-people"></i></div>
+                        <h3>Customers</h3>
+                        <p>{{dashboardData.customer_count}}</p>
+                    </div>
+                </a>
             </div>
-          </a>
         </div>
-        <div class="col col-50">
-          <a href="#/app/taxation">
-            <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-cash"></i></div>
-              <h3>Taxation</h3>
-              <p>{{dashboardData.tax_payments_count}}</p>
+        <div class="row eventTab">
+            <div class="col col-50">
+                <a href="#/app/year_summary">
+                    <div class="tabtext" ng-click="">
+                        <div class="icon"><i class="ion-ios-pie"></i></div>
+                        <h3>Year Summary</h3>
+                        <p></p>
+                    </div>
+                </a>
             </div>
-          </a>
-        </div>
-      </div>
-      <div class="row eventTab">
-        <div class="col col-50">
-          <a href="#/app/employee">
-            <div class="tabtext" ng-click="">
-              <div class="icon"><i class="ion-ios-person"></i></div>
-              <h3>Employees</h3>
-              <p>{{dashboardData.employee_count}}</p>
+            <div class="col col-50">
+                <a href="#/app/taxation">
+                    <div class="tabtext" ng-click="">
+                        <div class="icon"><i class="ion-cash"></i></div>
+                        <h3>Taxation</h3>
+                        <p>{{dashboardData.tax_payments_count}}</p>
+                    </div>
+                </a>
             </div>
-          </a>
         </div>
-      </div>
-    <!--
+        <div class="row eventTab">
+            <div class="col col-50">
+                <a href="#/app/employee">
+                    <div class="tabtext" ng-click="">
+                        <div class="icon"><i class="ion-ios-person"></i></div>
+                        <h3>Employees</h3>
+                        <p>{{dashboardData.employee_count}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!--
     <div class="row">
         <div class="col">
           <div class="small-box bg-aqua">
@@ -158,5 +161,5 @@
         </div>
     </div>
     -->
-  </ion-content>
+    </ion-content>
 </ion-view>

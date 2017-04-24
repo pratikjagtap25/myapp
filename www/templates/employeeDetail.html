@@ -1,54 +1,49 @@
 <ion-view view-title="Employee Details">
-  <ion-content>
-    <ion-list class="no-border">
+    <ion-content>
+        <ion-list class="no-border">
+            <div class="item item-divider">
+                Basic Info
+            </div>
+            <ion-item class="item-thumbnail-left item-text-wrap">
+                <img ng-src="{{employeeDetail.photo}}">
+                <h2>{{employeeDetail.first_name + employeeDetail.last_name}}</h2>
+                <p>
+                    <i class="icon ion-location"></i> {{employeeDetail.current_address}}
+                </p>
+            </ion-item>
+        </ion-list>
         <div class="item item-divider">
-            Basic Info
+            Details
         </div>
-        <ion-item class="item-thumbnail-left item-text-wrap">
-        	<img ng-src="{{employeeDetail.photo}}">
-	        <h2>{{employeeDetail.first_name + employeeDetail.last_name}}</h2>
-	        <p>
-        		<i class="icon ion-location"></i>
-				{{employeeDetail.current_address}}
-        	</p>
-    	</ion-item>
-    </ion-list>
-    <div class="item item-divider">
-         Details
-    </div>
-     <ion-list class="no-border">
-		<ion-item class="item-icon-left">
-			<i class="icon ion-ios-calendar"></i>
-			Age
-			<span class="item-note">{{employeeDetail.age}} Years</span>
-		</ion-item>
+        <ion-list class="no-border">
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-calendar"></i> Age
+                <span class="item-note">{{employeeDetail.age}} Years</span>
+            </ion-item>
 
-		<ion-item class="item-icon-left">
-			<i class="icon" ng-class="(employeeDetail.gender=='female')?'ion-women':'ion-man' "></i>
-			Gender
-			<span class="item-note">{{employeeDetail.gender | titleCase}}</span>
-		</ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon" ng-class="(employeeDetail.gender=='female')?'ion-women':'ion-man' "></i> Gender
+                <span class="item-note">{{employeeDetail.gender | titleCase}}</span>
+            </ion-item>
 
-		<ion-item class="item-icon-left">
-			<i class="icon ion-calendar"></i>
-			Birth Date
-			<span class="item-note">{{employeeDetail.date_of_birth | date:'dd-MM-yyyy'}}</span>
-		</ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-calendar"></i> Birth Date
+                <span class="item-note">{{employeeDetail.date_of_birth | date:'dd-MM-yyyy'}}</span>
+            </ion-item>
 
-		<ion-item class="item-icon-left">
-			<i class="icon ion-android-calendar"></i>
-			Joining Date
-			<span class="item-note">{{employeeDetail.date_of_joining | date:'dd-MM-yyyy'}}</span>
-		</ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-android-calendar"></i> Joining Date
+                <span class="item-note">{{employeeDetail.date_of_joining | date:'dd-MM-yyyy'}}</span>
+            </ion-item>
 
-		<ion-item class="item-icon-left">
-			<i class="icon ion-at"></i>
-			<a href="mailto:{{employeeDetail.email_id}}" >{{employeeDetail.email}}</a>
-		</ion-item>
-		<ion-item class="item-icon-left">
-			<i class="icon ion-android-call"></i>
-			<a href="tel:{{employeeDetail.mobile_phone}}" >{{employeeDetail.phone}} </a>
-		</ion-item>
-  	</ion-list>
-  </ion-content>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-at"></i>
+                <a href="mailto:{{employeeDetail.email_id}}">{{employeeDetail.email}}</a>
+            </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-android-call"></i>
+                <a href="tel:{{employeeDetail.mobile_phone}}">{{employeeDetail.phone}} </a>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>

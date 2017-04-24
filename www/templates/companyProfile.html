@@ -1,0 +1,57 @@
+<ion-view view-title="Company Profile">
+    <ion-nav-buttons side="secondary">
+        <div class="buttons">
+            <button class="button button-icon icon ion-ios-compose-outline" ng-click="updateCompanyProfile()"></button>
+        </div>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list class="no-border">
+            <div class="item item-divider">
+                Basic Info
+            </div>
+            <ion-item class="item-thumbnail-left item-text-wrap">
+                <img ng-src="http://www.shreedattaworks.in/images/logo.gif">
+                <h2>{{companyInfo.company_name}}</h2>
+                <p>
+                    <i class="icon ion-location"></i> {{companyInfo.office_address}}, {{companyInfo.office_city+' , '+companyInfo.office_pin}}.
+                </p>
+            </ion-item>
+        </ion-list>
+        <div class="item item-divider">
+            Details
+        </div>
+        <ion-list class="no-border">
+
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-barcode-outline"></i> Service Tax No.
+                <span class="item-note">{{companyInfo.service_tax_no}}</span>
+            </ion-item>
+
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-barcode-outline"></i> PAN No.
+                <span class="item-note">{{companyInfo.pan_no}}</span>
+            </ion-item>
+
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-barcode-outline"></i> GST No.
+                <span class="item-note">{{companyInfo.gst_no}}</span>
+            </ion-item>
+
+            <ion-item class="item-icon-left">
+                <i class="icon ion-at"></i> Email
+                <a class="item-note" href="mailto:{{companyInfo.email}}">{{companyInfo.email}}</a>
+            </ion-item>
+
+            <ion-item class="item-icon-left">
+                <i class="icon ion-android-call"></i> Phone No.
+                <a class="item-note" href="tel:{{companyInfo.office_phone}}">{{companyInfo.office_phone}} </a>
+            </ion-item>
+
+            <ion-item class="item-icon-left">
+                <i class="icon fa fa-window-maximize"></i> Website
+                <span class="item-note">{{companyInfo.website}}</span>
+            </ion-item>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

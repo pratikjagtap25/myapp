@@ -1,23 +1,25 @@
 <ion-view view-title="Login" hide-nav-bar="true">
-  <ion-header-bar class="bar-assertive">
-      <h1 class="title">Login</h1>
-  </ion-header-bar>
-  <ion-content>
-    <form >
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button nav-clear class="button button-block button-assertive" ng-click="doLogin(loginData)">Log in</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
+    <ion-header-bar class="bar-assertive">
+        <h1 class="title">Login</h1>
+    </ion-header-bar>
+    <ion-content>
+        <form>
+            <div class="list">
+                <img src="img/reporting-app-icon.png" class="logo">
+            </div>
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" ng-model="loginData.username">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" ng-model="loginData.password">
+                </label>
+                <label class="item">
+                    <button nav-clear class="button button-block button-assertive" ng-click="doLogin(loginData)">Log in</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
 </ion-view>
-

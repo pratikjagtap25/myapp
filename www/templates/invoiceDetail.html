@@ -1,53 +1,45 @@
 <ion-view view-title="Invoice Details">
-  <ion-content>
-    <ion-list>
-	  <ion-item class="item-icon-left">
-	    <i class="icon ion-ios-list"></i>
-	    Invoice No. 
-	    <span class="item-note">{{invoiceDetail.bill_no}}</span>
-	  </ion-item>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-list"></i> Invoice No.
+                <span class="item-note">{{invoiceDetail.bill_no}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	     <i class="icon ion-ios-calendar"></i>
-	    Invoice Date. 
-	    <span class="item-note">{{invoiceDetail.bill_date | date:'dd-MM-yyyy'}}</span>
-	  </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-ios-calendar"></i> Invoice Date.
+                <span class="item-note">{{invoiceDetail.bill_date | date:'dd-MM-yyyy'}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	     <i class="icon ion-person-stalker"></i>
-	    Customer 
-	    <span class="item-note">{{invoiceDetail.customer_name}}</span>
-	  </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-person-stalker"></i> Customer
+                <span class="item-note">{{invoiceDetail.customer_name}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left item-text-wrap" >
-	     <i class="icon ion-ios-paper"></i>
-	    Description 
-	    <p>{{invoiceDetail.description}}</p>
-	  </ion-item>
+            <ion-item class="item-icon-left item-text-wrap">
+                <i class="icon ion-ios-paper"></i> Description
+                <p>{{invoiceDetail.description}}</p>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	     <i class="icon ion-cash"></i>
-	    Gross Amount 
-	    <span class="item-note">{{invoiceDetail.gross_amount | currency: 'Rs. '}}</span>
-	  </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-cash"></i> Gross Amount
+                <span class="item-note">{{invoiceDetail.gross_amount | currency: 'Rs. '}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	    <i class="icon ion-cash"></i>
-	    Tax (%) 
-	    <span class="item-note">{{invoiceDetail.service_tax}}</span>
-	  </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-cash"></i> Tax (%)
+                <span class="item-note">{{invoiceDetail.service_tax}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	   <i class="icon ion-cash"></i>
-	    Tax Amount 
-	    <span class="item-note">{{invoiceDetail.service_tax_amount | currency: 'Rs. '}}</span>
-	  </ion-item>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-cash"></i> Tax Amount
+                <span class="item-note">{{invoiceDetail.service_tax_amount | currency: 'Rs. '}}</span>
+            </ion-item>
 
-	  <ion-item class="item-icon-left">
-	   <i class="icon ion-cash"></i>
-	    Total Amount 
-	    <span class="item-note">{{invoiceDetail.net_amount | currency: 'Rs. '}}</span>
-	  </ion-item>
-	</ion-list>
-  </ion-content>
+            <ion-item class="item-icon-left">
+                <i class="icon ion-cash"></i> Total Amount
+                <span class="item-note">{{invoiceDetail.net_amount | currency: 'Rs. '}}</span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>

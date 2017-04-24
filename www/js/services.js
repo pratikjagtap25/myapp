@@ -6,16 +6,14 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var loginFactory = {};
 
-     var transform = function(data){
+    var transform = function(data){
         return $httpParamSerializerJQLike(data);
     }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
     loginFactory.authenticateUser = function (loginData) {
-        return $http.post(API_URL+'UserController/Login', loginData,
-                {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                    transformRequest: transform
-                }
-            )
+        return $http.post(API_URL+'UserController/Login', loginData,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -67,6 +65,12 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var invoiceFactory = {};
 
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
     invoiceFactory.getInvoices = function (current_financial_year) {
         return $http.get(API_URL+'InvoiceController/search&year_id='+current_financial_year);
     };
@@ -75,12 +79,36 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
         return $http.get(API_URL + 'InvoiceController/Get&id='+ id);
     };
 
-    invoiceFactory.insertInvoice = function (cust) {
-        return $http.post(API_URL, cust);
+    invoiceFactory.insertInvoice = function (invoiceInfo) {
+        return $http.post(API_URL+'InvoiceController/Create', invoiceInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {insertSuccess:true};
+                    }
+                    else
+                    {
+                        return {insertSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
-    invoiceFactory.updateInvoice = function (cust) {
-        return $http.put(API_URL + '/' + cust.ID, cust)
+    invoiceFactory.updateInvoice = function (invoiceInfo) {
+        return $http.post(API_URL+'InvoiceController/Update&id='+invoiceInfo.id, invoiceInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
     invoiceFactory.deleteInvoice = function (id) {
@@ -93,6 +121,12 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var customerFactory = {};
 
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+    
     customerFactory.getCustomers = function () {
         return $http.get(API_URL+'CustomerController/search');
     };
@@ -102,11 +136,35 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     customerFactory.insertCustomer = function (cust) {
-        return $http.post(API_URL, cust);
+        return $http.post(API_URL+'CustomerController/Create', customerInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {insertSuccess:true};
+                    }
+                    else
+                    {
+                        return {insertSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
-    customerFactory.updateCustomer = function (cust) {
-        return $http.put(API_URL + '/' + cust.ID, cust)
+    customerFactory.updateCustomer = function (customerInfo) {
+        return $http.post(API_URL+'CustomerController/Update&id='+customerInfo, customerInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
     customerFactory.deleteCustomer = function (id) {
@@ -120,6 +178,12 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var employeeFactory = {};
 
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
     employeeFactory.getEmployees = function () {
         return $http.get(API_URL+'EmployeeController/search');
     };
@@ -128,12 +192,36 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
         return $http.get(API_URL + 'EmployeeController/Get&id=' + id);
     };
 
-    employeeFactory.insertEmployee = function (cust) {
-        return $http.post(API_URL, cust);
+    employeeFactory.insertEmployee = function (employeeInfo) {
+        return $http.post(API_URL+'EmployeeController/Create', employeeInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {insertSuccess:true};
+                    }
+                    else
+                    {
+                        return {insertSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
-    employeeFactory.updateEmployee = function (cust) {
-        return $http.put(API_URL + '/' + cust.ID, cust)
+    employeeFactory.updateEmployee = function (employeeInfo) {
+       return $http.post(API_URL+'EmployeeController/Update&id='+employeeInfo.id, employeeInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
     employeeFactory.deleteEmployee = function (id) {
@@ -141,6 +229,43 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     return employeeFactory;
+
+}])
+.factory('companyFactory', ['$http', 'API_URL', function ($http, API_URL) {
+
+    var companyFactory = {};
+
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
+    companyFactory.getCompanies = function () {
+        return $http.get(API_URL+'CompanyController/search');
+    };
+
+    companyFactory.getCompanyInfo = function (id) {
+        return $http.get(API_URL + 'CompanyController/Get&id='+ id);
+    };
+
+    companyFactory.updateCompanyInfo = function (companyInfo) {
+        return $http.post(API_URL+'CompanyController/Update&id='+companyInfo.company_id, companyInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
+    };
+
+    return companyFactory;
 
 }])
 .factory('dashboardFactory', ['$http', 'API_URL', function ($http, API_URL) {
@@ -177,20 +302,50 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     var taxationFactory = {};
 
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
     taxationFactory.getTaxationList = function () {
         return $http.get(API_URL+'TaxationController/search');
     };
 
     taxationFactory.getTaxDetails = function (id) {
-        return $http.get(API_URL + 'CustomerController/Get&id='+ id);
+        return $http.get(API_URL + 'TaxationController/Get&id='+ id);
     };
 
-    taxationFactory.insertTaxDetails = function (cust) {
-        return $http.post(API_URL, cust);
+    taxationFactory.insertTaxDetails = function (taxInfo) {
+        return $http.post(API_URL+'TaxationController/Create', taxInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {insertSuccess:true};
+                    }
+                    else
+                    {
+                        return {insertSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
     taxationFactory.updateTaxDetails= function (cust) {
-        return $http.put(API_URL + '/' + cust.ID, cust)
+       return $http.post(API_URL+'TaxationController/Update&id='+taxInfo.id, taxInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
     };
 
     taxationFactory.deleteTaxDetails = function (id) {
@@ -198,6 +353,63 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     return taxationFactory;
+
+}])
+.factory('paymentInfoFactory', ['$http', 'API_URL', function ($http, API_URL) {
+
+    var paymentInfoFactory = {};
+
+    var transform = function(data){
+        return $httpParamSerializerJQLike(data);
+    }
+
+    var headersObj={ headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, transformRequest: transform };
+
+    paymentInfoFactory.getInvoicePaymentList = function (paymentInfo) {
+        return $http.get(API_URL+'TaxationController/search&bill_no='+paymentInfo.bill_no);
+    };
+
+    paymentInfoFactory.getPaymentDetails = function (id) {
+        return $http.get(API_URL + 'TaxationController/Get&id='+ id);
+    };
+
+    paymentInfoFactory.insertPaymentInfo = function (paymentInfo) {
+        return $http.post(API_URL+'TaxationController/Create', paymentInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {insertSuccess:true};
+                    }
+                    else
+                    {
+                        return {insertSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
+    };
+
+    paymentInfoFactory.updatePaymentInfo= function (paymentInfo) {
+       return $http.post(API_URL+'TaxationController/Update&id='+paymentInfo.id, paymentInfo,headers)
+            .then (function(response, status, headers, config){
+                if(response.data.data!=null)
+                    {
+                        return {updateSuccess:true};
+                    }
+                    else
+                    {
+                        return {updateSuccess:false};
+                    }
+            }, function(data, status, headers, config) {
+                return data;
+            });
+    };
+
+    paymentInfoFactory.deletePaymentInfo = function (id) {
+        return $http.delete(API_URL + '/' + id);
+    };
+
+    return paymentInfoFactory;
 
 }])
 .factory('yearSummaryFactory', ['$http', 'API_URL','invoiceFactory','taxationFactory', 
