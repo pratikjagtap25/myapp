@@ -75,8 +75,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
         }
     ])
-    .controller('InvoiceCtrl', ['$scope', '$rootScope', 'invoiceFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'financialYearFactory', 'loadingFactory', '$ionicPopup', 'customerFactory','paymentInfoFactory',
-        function($scope, $rootScope, invoiceFactory, $ionicModal, $timeout, $ionicListDelegate, financialYearFactory, loadingFactory, $ionicPopup, customerFactory,paymentInfoFactory) {
+    .controller('InvoiceCtrl', ['$scope', '$rootScope', 'invoiceFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'financialYearFactory', 'loadingFactory', '$ionicPopup', 'customerFactory','paymentInfoFactory','$ionicPopup',
+        function($scope, $rootScope, invoiceFactory, $ionicModal, $timeout, $ionicListDelegate, financialYearFactory, loadingFactory, $ionicPopup, customerFactory,paymentInfoFactory,$ionicPopup) {
             $scope.message = "";
 
             $scope.invoice = {};
@@ -455,8 +455,8 @@ angular.module('myapp.controllers', ['myapp.config'])
             };
         }
     ])
-    .controller('InvoiceDetailCtrl', ['$scope', 'invoiceFactory', '$stateParams', 'loadingFactory',
-        function($scope, invoiceFactory, $stateParams, loadingFactory) {
+    .controller('InvoiceDetailCtrl', ['$scope', 'invoiceFactory', '$stateParams', 'loadingFactory','$ionicPopup',
+        function($scope, invoiceFactory, $stateParams, loadingFactory,$ionicPopup) {
             $scope.message = "";
 
             loadingFactory.showLoader("Loading");
@@ -475,8 +475,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
         }
     ])
-    .controller('CustomerCtrl', ['$scope', 'customerFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory',
-        function($scope, customerFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory) {
+    .controller('CustomerCtrl', ['$scope', 'customerFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory','$ionicPopup',
+        function($scope, customerFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory,$ionicPopup) {
             
             $scope.customer = {};
 
@@ -619,8 +619,8 @@ angular.module('myapp.controllers', ['myapp.config'])
             };
         }
     ])
-    .controller('CustomerDetailCtrl', ['$scope', 'customerFactory', '$stateParams', 'loadingFactory',
-        function($scope, customerFactory, $stateParams, loadingFactory) {
+    .controller('CustomerDetailCtrl', ['$scope', 'customerFactory', '$stateParams', 'loadingFactory','$ionicPopup',
+        function($scope, customerFactory, $stateParams, loadingFactory,$ionicPopup) {
             $scope.message = "";
 
             loadingFactory.showLoader("Loading");
@@ -638,8 +638,8 @@ angular.module('myapp.controllers', ['myapp.config'])
 
         }
     ])
-    .controller('EmployeeCtrl', ['$scope', 'employeeFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory',
-        function($scope, employeeFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory) {
+    .controller('EmployeeCtrl', ['$scope', 'employeeFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory','$ionicPopup',
+        function($scope, employeeFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory,$ionicPopup) {
             $scope.employee = {};
 
             $scope.employeeHeader = "Add Employee";
@@ -928,8 +928,8 @@ angular.module('myapp.controllers', ['myapp.config'])
             };
         }
     ])
-    .controller('CompanyInfoCtrl', ['$scope', 'companyFactory', '$stateParams', 'loadingFactory', '$ionicModal',
-        function($scope, companyFactory, $stateParams, loadingFactory, $ionicModal) {
+    .controller('CompanyInfoCtrl', ['$scope', 'companyFactory', '$stateParams', 'loadingFactory', '$ionicModal','$ionicPopup',
+        function($scope, companyFactory, $stateParams, loadingFactory, $ionicModal,$ionicPopup) {
             
             $scope.message = "";
 
@@ -958,7 +958,7 @@ angular.module('myapp.controllers', ['myapp.config'])
                     $scope.companyInfoModal = modal;
                 });
 
-                $scope.getCompanyInfo(1);
+                $scope.getCompanyProfile(1);
             };
 
             $scope.init();
@@ -982,7 +982,7 @@ angular.module('myapp.controllers', ['myapp.config'])
                 $scope.showCompanyInfoModel();
             };
 
-            $scope.UpdateCompanyProfile = function() {
+            $scope.ManageCompanyProfileUpdate = function() {
                 loadingFactory.showLoader();
 
                 companyFactory.updateCompanyInfo($scope.companyInfoEdit)
@@ -994,7 +994,11 @@ angular.module('myapp.controllers', ['myapp.config'])
                                 template: 'Company Info Updated !!!!'
                             });
 
+                            $scope.closeCompanyInfoModel();
+
                             $scope.companyInfoEdit = {};
+
+                            $scope.getCompanyProfile(1);
 
                             loadingFactory.hideLoader();
                         } 
@@ -1005,7 +1009,8 @@ angular.module('myapp.controllers', ['myapp.config'])
                                 title: 'Error',
                                 template: 'Please try after some time!!!!'
                             });
-
+                            $scope.closeCompanyInfoModel();
+                            
                             loadingFactory.hideLoader();
 
                         }
@@ -1019,8 +1024,8 @@ angular.module('myapp.controllers', ['myapp.config'])
             };
         }
     ])
-    .controller('TaxationCtrl', ['$scope', 'taxationFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory', 'TAXATION_DOCS_URL',
-        function($scope, taxationFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory, TAXATION_DOCS_URL) {
+    .controller('TaxationCtrl', ['$scope', 'taxationFactory', '$ionicModal', '$timeout', '$ionicListDelegate', 'loadingFactory', 'TAXATION_DOCS_URL','$ionicPopup',
+        function($scope, taxationFactory, $ionicModal, $timeout, $ionicListDelegate, loadingFactory, TAXATION_DOCS_URL,$ionicPopup) {
 
             $scope.TAXATION_DOCS_URL = TAXATION_DOCS_URL;
 

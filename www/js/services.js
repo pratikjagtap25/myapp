@@ -61,7 +61,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     return loginFactory;
 }])
-.factory('invoiceFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('invoiceFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var invoiceFactory = {};
 
@@ -80,7 +80,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     invoiceFactory.insertInvoice = function (invoiceInfo) {
-        return $http.post(API_URL+'InvoiceController/Create', invoiceInfo,headers)
+        return $http.post(API_URL+'InvoiceController/Create', invoiceInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -96,7 +96,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     invoiceFactory.updateInvoice = function (invoiceInfo) {
-        return $http.post(API_URL+'InvoiceController/Update&id='+invoiceInfo.id, invoiceInfo,headers)
+        return $http.post(API_URL+'InvoiceController/Update&id='+invoiceInfo.id, invoiceInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -117,7 +117,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 
     return invoiceFactory;
 }])
-.factory('customerFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('customerFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var customerFactory = {};
 
@@ -136,7 +136,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     customerFactory.insertCustomer = function (cust) {
-        return $http.post(API_URL+'CustomerController/Create', customerInfo,headers)
+        return $http.post(API_URL+'CustomerController/Create', customerInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -152,7 +152,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     customerFactory.updateCustomer = function (customerInfo) {
-        return $http.post(API_URL+'CustomerController/Update&id='+customerInfo, customerInfo,headers)
+        return $http.post(API_URL+'CustomerController/Update&id='+customerInfo, customerInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -174,7 +174,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return customerFactory;
 
 }])
-.factory('employeeFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('employeeFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var employeeFactory = {};
 
@@ -193,7 +193,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     employeeFactory.insertEmployee = function (employeeInfo) {
-        return $http.post(API_URL+'EmployeeController/Create', employeeInfo,headers)
+        return $http.post(API_URL+'EmployeeController/Create', employeeInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -209,7 +209,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     employeeFactory.updateEmployee = function (employeeInfo) {
-       return $http.post(API_URL+'EmployeeController/Update&id='+employeeInfo.id, employeeInfo,headers)
+       return $http.post(API_URL+'EmployeeController/Update&id='+employeeInfo.id, employeeInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -231,7 +231,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return employeeFactory;
 
 }])
-.factory('companyFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('companyFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var companyFactory = {};
 
@@ -250,7 +250,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     companyFactory.updateCompanyInfo = function (companyInfo) {
-        return $http.post(API_URL+'CompanyController/Update&id='+companyInfo.company_id, companyInfo,headers)
+        return $http.post(API_URL+'CompanyController/Update&id='+companyInfo.company_id, companyInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -268,7 +268,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return companyFactory;
 
 }])
-.factory('dashboardFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('dashboardFactory',['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var dashboardFactory = {};
 
@@ -279,7 +279,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return dashboardFactory;
 
 }])
-.service('financialYearFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.service('financialYearFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var financialYearFactory={};
 
@@ -298,7 +298,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     
     return financialYearFactory;
 }])
-.factory('taxationFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('taxationFactory', ['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var taxationFactory = {};
 
@@ -317,7 +317,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     taxationFactory.insertTaxDetails = function (taxInfo) {
-        return $http.post(API_URL+'TaxationController/Create', taxInfo,headers)
+        return $http.post(API_URL+'TaxationController/Create', taxInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -333,7 +333,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     taxationFactory.updateTaxDetails= function (cust) {
-       return $http.post(API_URL+'TaxationController/Update&id='+taxInfo.id, taxInfo,headers)
+       return $http.post(API_URL+'TaxationController/Update&id='+taxInfo.id, taxInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -355,7 +355,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     return taxationFactory;
 
 }])
-.factory('paymentInfoFactory', ['$http', 'API_URL', function ($http, API_URL) {
+.factory('paymentInfoFactory',['$http', 'API_URL','$httpParamSerializerJQLike', function ($http, API_URL,$httpParamSerializerJQLike) {
 
     var paymentInfoFactory = {};
 
@@ -374,7 +374,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     paymentInfoFactory.insertPaymentInfo = function (paymentInfo) {
-        return $http.post(API_URL+'TaxationController/Create', paymentInfo,headers)
+        return $http.post(API_URL+'TaxationController/Create', paymentInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -390,7 +390,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
     };
 
     paymentInfoFactory.updatePaymentInfo= function (paymentInfo) {
-       return $http.post(API_URL+'TaxationController/Update&id='+paymentInfo.id, paymentInfo,headers)
+       return $http.post(API_URL+'TaxationController/Update&id='+paymentInfo.id, paymentInfo,headersObj)
             .then (function(response, status, headers, config){
                 if(response.data.data!=null)
                     {
@@ -427,7 +427,7 @@ angular.module('myapp.services', ['ngResource','myapp.config'])
 .factory('loadingFactory',['$ionicLoading',  function ($ionicLoading) {
     var loadingFactory={};
 
-    loadingFactory.showLoader=function(message){
+    loadingFactory.showLoader=function(message=""){
         $ionicLoading.show({
             template: '<ion-spinner></ion-spinner> '+message
         });
